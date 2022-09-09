@@ -1,0 +1,66 @@
+# ninja log v5
+1	298	6843966871641089	C:/Users/v2msy/Documents/GitHub/Embedded_Team3/Debug/Obj/Libraries/CMSIS/DeviceSupport/Startup/startup_stm32f10x_cl.o	a7956089bea6dceb
+203	539	6843966873775349	C:/Users/v2msy/Documents/GitHub/Embedded_Team3/Debug/Obj/CoreSupport/core_cm3.o	c18d4966c1da2ad0
+1	119	6843968690165936	C:/Users/v2msy/Desktop/2022학년도 2학기/임베디드시스템 설계 및 실험/실험_제공_파일_/Debug/Obj/Libraries/CMSIS/DeviceSupport/Startup/startup_stm32f10x_cl.o	e6975ec3f49c163c
+533	805	6843968696678483	C:/Users/v2msy/Desktop/2022학년도 2학기/임베디드시스템 설계 및 실험/실험_제공_파일_/Debug/Obj/CoreSupport/core_cm3.o	dd5583534b02ccf
+1	98	6843970591704430	C:/Users/v2msy/Desktop/2022학년도 2학기/임베디드시스템 설계 및 실험/project_test/Debug/Obj/Libraries/CMSIS/DeviceSupport/Startup/startup_stm32f10x_cl.o	f97b1b543d2b0871
+634	892	6843970599291960	C:/Users/v2msy/Desktop/2022학년도 2학기/임베디드시스템 설계 및 실험/project_test/Debug/Obj/CoreSupport/core_cm3.o	56cd350b02cbd7d2
+433	808	6843972065675387	C:/Users/v2msy/Desktop/2022학년도 2학기/임베디드시스템 설계 및 실험/project_test/Debug/Obj/CoreSupport/core_cm3.o	466722f440ffb14
+41	425	6843972577835756	C:/Users/v2msy/Desktop/2022학년도 2학기/임베디드시스템 설계 및 실험/project_test/Debug/Obj/Libraries/STM32F10x_StdPeriph_Driver_v3.5/src/stm32f10x_crc.o	50b537b1efbadfb4
+29	452	6843972577905569	C:/Users/v2msy/Desktop/2022학년도 2학기/임베디드시스템 설계 및 실험/project_test/Debug/Obj/Libraries/STM32F10x_StdPeriph_Driver_v3.5/src/stm32f10x_cec.o	8d29a47ac8e4f054
+52	480	6843972577935510	C:/Users/v2msy/Desktop/2022학년도 2학기/임베디드시스템 설계 및 실험/project_test/Debug/Obj/Libraries/STM32F10x_StdPeriph_Driver_v3.5/src/stm32f10x_dac.o	9acf073365e8adc9
+12	529	6843972577935510	C:/Users/v2msy/Desktop/2022학년도 2학기/임베디드시스템 설계 및 실험/project_test/Debug/Obj/Libraries/STM32F10x_StdPeriph_Driver_v3.5/src/stm32f10x_bkp.o	92a3531e633026c9
+74	550	6843972578324447	C:/Users/v2msy/Desktop/2022학년도 2학기/임베디드시스템 설계 및 실험/project_test/Debug/Obj/Libraries/STM32F10x_StdPeriph_Driver_v3.5/src/stm32f10x_dma.o	d3b32139a3547001
+20	591	6843972578992664	C:/Users/v2msy/Desktop/2022학년도 2학기/임베디드시스템 설계 및 실험/project_test/Debug/Obj/Libraries/STM32F10x_StdPeriph_Driver_v3.5/src/stm32f10x_adc.o	21f56ab257fecd9
+64	613	6843972578972707	C:/Users/v2msy/Desktop/2022학년도 2학기/임베디드시스템 설계 및 실험/project_test/Debug/Obj/Libraries/STM32F10x_StdPeriph_Driver_v3.5/src/stm32f10x_flash.o	415fccb1c098813
+2	637	6843972578992664	C:/Users/v2msy/Desktop/2022학년도 2학기/임베디드시스템 설계 및 실험/project_test/Debug/Obj/Libraries/STM32F10x_StdPeriph_Driver_v3.5/src/stm32f10x_can.o	9c1586d25bf0e392
+468	819	6843972581815076	C:/Users/v2msy/Desktop/2022학년도 2학기/임베디드시스템 설계 및 실험/project_test/Debug/Obj/Libraries/STM32F10x_StdPeriph_Driver_v3.5/src/stm32f10x_dbgmcu.o	4304850a2b83284
+541	868	6843972582214016	C:/Users/v2msy/Desktop/2022학년도 2학기/임베디드시스템 설계 및 실험/project_test/Debug/Obj/Libraries/STM32F10x_StdPeriph_Driver_v3.5/src/stm32f10x_pwr.o	4c3fa133dee55db9
+495	891	6843972582214016	C:/Users/v2msy/Desktop/2022학년도 2학기/임베디드시스템 설계 및 실험/project_test/Debug/Obj/Libraries/STM32F10x_StdPeriph_Driver_v3.5/src/stm32f10x_exti.o	8da46ca19d801da3
+440	913	6843972582243940	C:/Users/v2msy/Desktop/2022학년도 2학기/임베디드시스템 설계 및 실험/project_test/Debug/Obj/Libraries/STM32F10x_StdPeriph_Driver_v3.5/src/stm32f10x_fsmc.o	2de87c68972d3fa4
+565	941	6843972582303773	C:/Users/v2msy/Desktop/2022학년도 2학기/임베디드시스템 설계 및 실험/project_test/Debug/Obj/Libraries/STM32F10x_StdPeriph_Driver_v3.5/src/stm32f10x_gpio.o	f97e81bd38a11f45
+604	1000	6843972583560402	C:/Users/v2msy/Desktop/2022학년도 2학기/임베디드시스템 설계 및 실험/project_test/Debug/Obj/Libraries/STM32F10x_StdPeriph_Driver_v3.5/src/stm32f10x_rcc.o	33c416658501e485
+628	1052	6843972584069043	C:/Users/v2msy/Desktop/2022학년도 2학기/임베디드시스템 설계 및 실험/project_test/Debug/Obj/Libraries/STM32F10x_StdPeriph_Driver_v3.5/src/stm32f10x_iwdg.o	ef58a5270d4b7cef
+881	1080	6843972584118904	C:/Users/v2msy/Desktop/2022학년도 2학기/임베디드시스템 설계 및 실험/project_test/Debug/Obj/CoreSupport/core_cm3.o	48b182d9fe20a6ba
+651	1127	6843972584866890	C:/Users/v2msy/Desktop/2022학년도 2학기/임베디드시스템 설계 및 실험/project_test/Debug/Obj/Libraries/STM32F10x_StdPeriph_Driver_v3.5/src/stm32f10x_rtc.o	dd3e767a771cc17c
+904	1304	6843972586622177	C:/Users/v2msy/Desktop/2022학년도 2학기/임베디드시스템 설계 및 실험/project_test/Debug/Obj/Libraries/CMSIS/DeviceSupport/system_stm32f10x.o	ca5d90a8f44a5cab
+930	1351	6843972587100892	C:/Users/v2msy/Desktop/2022학년도 2학기/임베디드시스템 설계 및 실험/project_test/Debug/Obj/Libraries/STM32F10x_StdPeriph_Driver_v3.5/src/misc.o	b4f09114f1f5bece
+831	1374	6843972587140785	C:/Users/v2msy/Desktop/2022학년도 2학기/임베디드시스템 설계 및 실험/project_test/Debug/Obj/Libraries/STM32F10x_StdPeriph_Driver_v3.5/src/stm32f10x_i2c.o	34740b9d65681d94
+957	1407	6843972587679350	C:/Users/v2msy/Desktop/2022학년도 2학기/임베디드시스템 설계 및 실험/project_test/Debug/Obj/Libraries/STM32F10x_StdPeriph_Driver_v3.5/src/stm32f10x_sdio.o	6e5ab3da0d4c0814
+1066	1433	6843972587978531	C:/Users/v2msy/Desktop/2022학년도 2학기/임베디드시스템 설계 및 실험/project_test/Debug/Obj/user/main.o	d12d2b3b366508d6
+1093	1486	6843972588517087	C:/Users/v2msy/Desktop/2022학년도 2학기/임베디드시스템 설계 및 실험/project_test/Debug/Obj/Libraries/STM32F10x_StdPeriph_Driver_v3.5/src/stm32f10x_spi.o	d831ff0bd43011b9
+1141	1527	6843972588906051	C:/Users/v2msy/Desktop/2022학년도 2학기/임베디드시스템 설계 및 실험/project_test/Debug/Obj/Libraries/STM32F10x_StdPeriph_Driver_v3.5/src/stm32f10x_usart.o	e1c0b97a24ae1bb2
+1016	1540	6843972588886097	C:/Users/v2msy/Desktop/2022학년도 2학기/임베디드시스템 설계 및 실험/project_test/Debug/Obj/Libraries/STM32F10x_StdPeriph_Driver_v3.5/src/stm32f10x_tim.o	69863a3e6ffeb2ff
+1318	1617	6843972589803986	C:/Users/v2msy/Desktop/2022학년도 2학기/임베디드시스템 설계 및 실험/project_test/Debug/Obj/Libraries/STM32F10x_StdPeriph_Driver_v3.5/src/stm32f10x_wwdg.o	e45a2a1d1445420f
+1363	1644	6843972590093179	C:/Users/v2msy/Desktop/2022학년도 2학기/임베디드시스템 설계 및 실험/project_test/Debug/Obj/user/stm32f10x_it.o	53a4af09eb243787
+1657	2132	6843972594952526	C:/Users/v2msy/Desktop/2022학년도 2학기/임베디드시스템 설계 및 실험/project_test/Debug/Exe/project_test.out	817b40f005840cd0
+2165	2229	6843972596039883	C:/Users/v2msy/Desktop/2022학년도 2학기/임베디드시스템 설계 및 실험/project_test/Debug/Exe/project_test.bin	929cb6abd097e651
+37	227	6843972963323507	C:/Users/v2msy/Documents/GitHub/Embedded_Team3/Debug/Obj/CoreSupport/core_cm3.o	7274f6027788a43c
+49	403	6843972965018957	C:/Users/v2msy/Documents/GitHub/Embedded_Team3/Debug/Obj/Libraries/STM32F10x_StdPeriph_Driver_v3.5/src/stm32f10x_bkp.o	4ef5806b6f3e18b
+11	442	6843972965078812	C:/Users/v2msy/Documents/GitHub/Embedded_Team3/Debug/Obj/Libraries/CMSIS/DeviceSupport/system_stm32f10x.o	2fe9085c036e745d
+80	485	6843972965727060	C:/Users/v2msy/Documents/GitHub/Embedded_Team3/Debug/Obj/Libraries/STM32F10x_StdPeriph_Driver_v3.5/src/stm32f10x_cec.o	e8e25286fa70bc0a
+106	508	6843972965816830	C:/Users/v2msy/Documents/GitHub/Embedded_Team3/Debug/Obj/Libraries/STM32F10x_StdPeriph_Driver_v3.5/src/misc.o	c3f562d81155b159
+93	531	6843972965786906	C:/Users/v2msy/Documents/GitHub/Embedded_Team3/Debug/Obj/Libraries/STM32F10x_StdPeriph_Driver_v3.5/src/stm32f10x_crc.o	6fe5b3b56af7a5b5
+65	572	6843972966255639	C:/Users/v2msy/Documents/GitHub/Embedded_Team3/Debug/Obj/Libraries/STM32F10x_StdPeriph_Driver_v3.5/src/stm32f10x_adc.o	c1f63f6246a04aaf
+118	604	6843972966864014	C:/Users/v2msy/Documents/GitHub/Embedded_Team3/Debug/Obj/Libraries/STM32F10x_StdPeriph_Driver_v3.5/src/stm32f10x_can.o	80acd25b70f2387e
+235	768	6843972968679134	C:/Users/v2msy/Documents/GitHub/Embedded_Team3/Debug/Obj/Libraries/STM32F10x_StdPeriph_Driver_v3.5/src/stm32f10x_fsmc.o	b5bfa18f64cdd2c0
+454	815	6843972969177804	C:/Users/v2msy/Documents/GitHub/Embedded_Team3/Debug/Obj/Libraries/STM32F10x_StdPeriph_Driver_v3.5/src/stm32f10x_exti.o	948ee6aad5e77f40
+495	853	6843972969516901	C:/Users/v2msy/Documents/GitHub/Embedded_Team3/Debug/Obj/Libraries/STM32F10x_StdPeriph_Driver_v3.5/src/stm32f10x_dbgmcu.o	4de1724561b053fc
+518	872	6843972969506916	C:/Users/v2msy/Documents/GitHub/Embedded_Team3/Debug/Obj/Libraries/STM32F10x_StdPeriph_Driver_v3.5/src/stm32f10x_dac.o	e260834f05dcd207
+413	906	6843972969756240	C:/Users/v2msy/Documents/GitHub/Embedded_Team3/Debug/Obj/Libraries/STM32F10x_StdPeriph_Driver_v3.5/src/stm32f10x_flash.o	b20d9136bd90e4e1
+543	923	6843972969865952	C:/Users/v2msy/Documents/GitHub/Embedded_Team3/Debug/Obj/Libraries/STM32F10x_StdPeriph_Driver_v3.5/src/stm32f10x_dma.o	6a2cf2ed97b0bda0
+612	1034	6843972971401827	C:/Users/v2msy/Documents/GitHub/Embedded_Team3/Debug/Obj/Libraries/STM32F10x_StdPeriph_Driver_v3.5/src/stm32f10x_gpio.o	431fdba755d9b233
+581	1066	6843972971521502	C:/Users/v2msy/Documents/GitHub/Embedded_Team3/Debug/Obj/Libraries/STM32F10x_StdPeriph_Driver_v3.5/src/stm32f10x_i2c.o	a676c4da2c31682d
+777	1129	6843972972339309	C:/Users/v2msy/Documents/GitHub/Embedded_Team3/Debug/Obj/Libraries/STM32F10x_StdPeriph_Driver_v3.5/src/stm32f10x_iwdg.o	154168aaf87d698c
+824	1164	6843972972578676	C:/Users/v2msy/Documents/GitHub/Embedded_Team3/Debug/Obj/Libraries/STM32F10x_StdPeriph_Driver_v3.5/src/stm32f10x_rtc.o	42a8ec63c6186b8c
+862	1182	6843972972688374	C:/Users/v2msy/Documents/GitHub/Embedded_Team3/Debug/Obj/Libraries/STM32F10x_StdPeriph_Driver_v3.5/src/stm32f10x_pwr.o	9309e1b2f9dc01bf
+881	1225	6843972973316706	C:/Users/v2msy/Documents/GitHub/Embedded_Team3/Debug/Obj/Libraries/STM32F10x_StdPeriph_Driver_v3.5/src/stm32f10x_rcc.o	3daccc6295585b4d
+914	1252	6843972973595938	C:/Users/v2msy/Documents/GitHub/Embedded_Team3/Debug/Obj/user/main.o	6ae5d8bffcea254e
+933	1333	6843972974403770	C:/Users/v2msy/Documents/GitHub/Embedded_Team3/Debug/Obj/Libraries/STM32F10x_StdPeriph_Driver_v3.5/src/stm32f10x_usart.o	78388bf265ede353
+1075	1403	6843972975111871	C:/Users/v2msy/Documents/GitHub/Embedded_Team3/Debug/Obj/Libraries/STM32F10x_StdPeriph_Driver_v3.5/src/stm32f10x_sdio.o	4de52be77537c4c9
+1173	1424	6843972975281415	C:/Users/v2msy/Documents/GitHub/Embedded_Team3/Debug/Obj/Libraries/STM32F10x_StdPeriph_Driver_v3.5/src/stm32f10x_wwdg.o	5d133c2334861360
+1192	1443	6843972975440988	C:/Users/v2msy/Documents/GitHub/Embedded_Team3/Debug/Obj/user/stm32f10x_it.o	11cbc30d7be25317
+1140	1450	6843972975530755	C:/Users/v2msy/Documents/GitHub/Embedded_Team3/Debug/Obj/Libraries/STM32F10x_StdPeriph_Driver_v3.5/src/stm32f10x_spi.o	c2e5c129699876b1
+1044	1505	6843972976139123	C:/Users/v2msy/Documents/GitHub/Embedded_Team3/Debug/Obj/Libraries/STM32F10x_StdPeriph_Driver_v3.5/src/stm32f10x_tim.o	679369c5038409f8
+1516	1691	6843972978001203	C:/Users/v2msy/Documents/GitHub/Embedded_Team3/Debug/Exe/project_test.out	e04df941a2e30045
+1720	1735	6843972978523452	C:/Users/v2msy/Documents/GitHub/Embedded_Team3/Debug/Exe/project_test.bin	7a8def1705bda9df
