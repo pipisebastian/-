@@ -2,6 +2,6 @@
 학부 임베디드시스템 설계 및 실험 수업
 
 ## 주차별 미션
-:one: 환경 설정 및 컴파일, 업로드
+:two: 환경 설정 및 컴파일, 업로드
 
-:two: 조이스틱 Up, Down, Right, Left 제어 및 LED 점등
+:three: 조이스틱 Up, Down, Right, Left 제어 및 LED 점등
