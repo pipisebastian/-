@@ -19,21 +19,21 @@ int main()
     *((volatile unsigned int *)0x40011404) &= 0xFFFF0FFF; // init port D - 스위치!!! (11 PIN reset)
     *((volatile unsigned int *)0x40011404) |= 0x00008000; // port D input mode
 
-    *((volatile unsigned int *)0x40011800) &= 0xFFFFF00F; // init port E -  (1,2 PIN reset)
-    *((volatile unsigned int *)0x40011800) |= 0x00000330; // port E output mode
+    *((volatile unsigned int *)0x40011800) &= 0xFFFFFF00; // init port E -  (1,2 PIN reset)
+    *((volatile unsigned int *)0x40011800) |= 0x00000033; // port E output mode
 
     while (1)
     {
         delay();
         printf("1");
-        *((volatile unsigned int *)0x40011810) |= 0x00060000;
+        *((volatile unsigned int *)0x40011810) |= 0x00030000;
         delay();
         printf("2");
-        *((volatile unsigned int *)0x40011810) |= 0x00060000;
-        *((volatile unsigned int *)0x40011810) |= 0x00000002;
+        *((volatile unsigned int *)0x40011810) |= 0x00030000;
+        *((volatile unsigned int *)0x40011810) |= 0x00000001;
         delay();
         printf("3");
-        *((volatile unsigned int *)0x40011810) |= 0x00060000;
-        *((volatile unsigned int *)0x40011810) |= 0x00000004; 
+        *((volatile unsigned int *)0x40011810) |= 0x00030000;
+        *((volatile unsigned int *)0x40011810) |= 0x00000002; 
     }
 }
