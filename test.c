@@ -1,3 +1,4 @@
+
 #include "stm32f10x.h"
 
 void delay(void)
@@ -11,7 +12,7 @@ void delay(void)
 int main()
 {
     // PC2(조이스틱 down) , PC5(조이스틱 up), PD11(스위치)
-    *((volatile unsigned int *)0x40021018) |= 0x70; // clock enable port C, D
+    *((volatile unsigned int *)0x40021018) |= 0x30; // clock enable port C, D
 
     *((volatile unsigned int *)0x40011000) &= 0xFF0000FF; // init port C
     *((volatile unsigned int *)0x40011000) |= 0x00888800; // port C input mode
@@ -24,16 +25,21 @@ int main()
 
     while (1)
     {
-        delay();
-        printf("1");
-        *((volatile unsigned int *)0x40011810) |= 0x00030000;
-        delay();
-        printf("2");
-        *((volatile unsigned int *)0x40011810) |= 0x00030000;
-        *((volatile unsigned int *)0x40011810) |= 0x00000001;
-        delay();
-        printf("3");
-        *((volatile unsigned int *)0x40011810) |= 0x00030000;
-        *((volatile unsigned int *)0x40011810) |= 0x00000002; 
+
+        if (0x1 & ~(*((volatile unsigned int *)0x4001100C) >> 11)) // 스위치 누름 => pd11
+        {                                                          //모터 정지                                                       // Down 2 bit
+            *((volatile unsigned int *)0x40011810) |= 0x00030000;  // reset PE1,2 -> 0, 0
+        }
+        else if (0x1 & ~(*((volatile unsigned int *)0x40011008) >> 2)) // DOWN -> 반대방향ㅇ
+        {
+            
+            *((volatile unsigned int *)0x40011810) |= 0x00030000; // reset PE1,2 -> 0, 0
+            *((volatile unsigned int *)0x40011810) |= 0x00000001; // set PE1 -> 1
+        }
+        else if (0x1 & ~(*((volatile unsigned int *)0x40011008) >> 5)) //모터 시계
+        {
+            *((volatile unsigned int *)0x40011810) |= 0x00030000; // reset PE1,2 -> 0, 0
+            *((volatile unsigned int *)0x40011810) |= 0x00000002;  // set PE2 -> 1
+        }
     }
 }
