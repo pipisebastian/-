@@ -5,3 +5,5 @@
 :two: 환경 설정 및 컴파일, 업로드
 
 :three: 조이스틱 Up, Down, Right, Left 제어 및 LED 점등
+
+:four: 조이스틱 Up, Down 와 스위치 1 제어 및 모터 작동
