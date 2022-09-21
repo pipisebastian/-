@@ -26,7 +26,7 @@ int main()
     while (1)
     {
 
-        if (0x1 & ~(*((volatile unsigned int *)0x4001100C) >> 11)) // 스위치 누름 => pd11
+        if (0x1 & ~(*((volatile unsigned int *)0x40011408) >> 11)) // 스위치 누름 => pd11
         {                                                          //모터 정지                                                       // Down 2 bit
             *((volatile unsigned int *)0x40011810) |= 0x00000000;  // set PE1,2 -> 0, 0
         }
