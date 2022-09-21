@@ -11,7 +11,7 @@ void delay(void)
 int main()
 {
     // PC2(조이스틱 down) , PC5(조이스틱 up), PD11(스위치)
-    *((volatile unsigned int *)0x40021018) |= 0x30; // clock enable port C, D
+    *((volatile unsigned int *)0x40021018) |= 0x70; // clock enable port C, D
 
     *((volatile unsigned int *)0x40011000) &= 0xFF0000FF; // init port C
     *((volatile unsigned int *)0x40011000) |= 0x00888800; // port C input mode
@@ -37,7 +37,7 @@ int main()
         }
         else if (0x1 & ~(*((volatile unsigned int *)0x40011008) >> 5)) //모터 시계
         {
-            *((volatile unsigned int *)0x40011810) |= 0x00030000; // reset PE1,2 -> 0, 0
+            *((volatile unsigned int *)0x40011810) |= 0x00030000; // reset PE0,1 -> 0, 0
             *((volatile unsigned int *)0x40011810) |= 0x00000002;  // set PE1 -> 1
         }
     }
