@@ -6,4 +6,4 @@
 
 :three: 조이스틱 Up, Down, Right, Left 제어 및 LED 점등
 
-:four: 조이스틱 Up, Down 와 스위치 1 제어 및 모터 작동
+:four: 조이스틱 및 스위치로 모터 제어
