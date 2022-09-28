@@ -1,4 +1,5 @@
 #include "stm32f10x.h"
+#include "stdio.h"
 
 void SysInit(void)
 {
@@ -58,7 +59,7 @@ void SetSysClock(void)
         FLASH->ACR &= (uint32_t)((uint32_t)~FLASH_ACR_LATENCY);
         FLASH->ACR |= (uint32_t)FLASH_ACR_LATENCY_0;
 
-        //@TODO - 1 Set the clock, (//) �ּ� ǥ�ø� ���ְ� Ʋ�� ���� �ִٸ� ����� �� ������ �����Ͻÿ�
+        //@TODO - 1 Set the clock, (//) ??? ??ø? ????? ??? ???? ???? ????? ?? ?????? ??????y?
         /* HCLK = SYSCLK */
         RCC->CFGR |= (uint32_t)RCC_CFGR_HPRE_DIV1;
         /* PCLK2 = HCLK / ?, use PPRE2 */
@@ -216,7 +217,7 @@ void SendData(uint16_t data)
 int main()
 {
     int i;
-    char msg[] = "Hello Team00\r\n";
+    char msg[] = "Hello Team03\r\n";
 
     SysInit();
     SetSysClock();
