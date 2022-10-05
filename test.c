@@ -80,7 +80,6 @@ void GPIO_Configure(void)
 
     // RX -> PA 10
     GPIO_InitStructure.GPIO_Pin = GPIO_Pin_10;
-    GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
     GPIO_InitStructure.GPIO_Mode = GPIO_Mode_IPU | GPIO_Mode_IPD;
     GPIO_Init(GPIOA, &GPIO_InitStructure);
 }
@@ -186,7 +185,6 @@ void NVIC_Configure(void)
     NVIC_InitStructure.NVIC_IRQChannelCmd = ENABLE;
     NVIC_Init(&NVIC_InitStructure);
 }
-//////////////////////////여기까지 했습니다!
 
 void USART1_IRQHandler()
 {
