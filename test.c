@@ -200,12 +200,10 @@ void USART1_IRQHandler()
         */
         if (word == 'a')
         {       
-            printf("input a");
             flag = 0;
         }
         else if (word == 'b')
         {      
-            printf("input b");
             flag = 1;
         }
 
@@ -222,7 +220,6 @@ void EXTI15_10_IRQHandler(void)
         if (GPIO_ReadInputDataBit(GPIOD, GPIO_Pin_11) == Bit_RESET)
         {
             // TODO implement
-            printf("1");
             int i=0;
             char str[] = "TEAM03.\r\n";
             while (str[i]!= NULL){
@@ -242,8 +239,6 @@ void EXTI2_IRQHandler(void)
         if (GPIO_ReadInputDataBit(GPIOC, GPIO_Pin_2) == Bit_RESET)
         {
             flag = 1;
-            printf("down\n");
-            printf("%d",flag);
         }
         EXTI_ClearITPendingBit(EXTI_Line2);
     }
@@ -257,8 +252,6 @@ void EXTI9_5_IRQHandler(void)
         if (GPIO_ReadInputDataBit(GPIOC, GPIO_Pin_5) == Bit_RESET)
         {
             flag = 0;
-            printf("up\n");
-            printf("%d",flag);
         }
         EXTI_ClearITPendingBit(EXTI_Line5);
     }
