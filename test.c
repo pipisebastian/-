@@ -1,10 +1,9 @@
-
 #include "stm32f10x.h"
 #include "stm32f10x_exti.h"
 #include "stm32f10x_gpio.h"
 #include "stm32f10x_usart.h"
 #include "stm32f10x_rcc.h"
-
+#include "stdio.h"
 #include "misc.h"
 
 /* function prototype */
@@ -202,11 +201,13 @@ void USART1_IRQHandler()
                  -> 입력 "b" -> 동작 B
         */
         if (word == 'a')
-        {
+        {       
+            printf("input a");
             flag = 0;
         }
-        else if (word == "b")
-        {
+        else if (word == 'b')
+        {      
+            printf("input b");
             flag = 1;
         }
 
@@ -223,6 +224,13 @@ void EXTI15_10_IRQHandler(void)
         if (GPIO_ReadInputDataBit(GPIOD, GPIO_Pin_11) == Bit_RESET)
         {
             // TODO implement
+            printf("1");
+            int i=0;
+            char str[] = "TEAM03.\r\n";
+            while (str[i]!= NULL){
+                sendDataUART1(str[i]);
+                i++;
+            }
         }
         EXTI_ClearITPendingBit(EXTI_Line11);
     }
@@ -233,9 +241,11 @@ void EXTI2_IRQHandler(void)
 
     if (EXTI_GetITStatus(EXTI_Line2) != RESET)
     {
-        if (GPIO_ReadInputDataBit(GPIOD, GPIO_Pin_2) == Bit_RESET)
+        if (GPIO_ReadInputDataBit(GPIOC, GPIO_Pin_2) == Bit_RESET)
         {
             flag = 1;
+            printf("down\n");
+            printf("%d",flag);
         }
         EXTI_ClearITPendingBit(EXTI_Line2);
     }
@@ -246,9 +256,11 @@ void EXTI9_5_IRQHandler(void)
 
     if (EXTI_GetITStatus(EXTI_Line5) != RESET)
     {
-        if (GPIO_ReadInputDataBit(GPIOD, GPIO_Pin_5) == Bit_RESET)
+        if (GPIO_ReadInputDataBit(GPIOC, GPIO_Pin_5) == Bit_RESET)
         {
             flag = 0;
+            printf("up\n");
+            printf("%d",flag);
         }
         EXTI_ClearITPendingBit(EXTI_Line5);
     }
@@ -269,7 +281,7 @@ void sendDataUART1(uint16_t data)
         ;
     USART_SendData(USART1, data);
 }
-
+int16_t seq[4]={GPIO_Pin_2,GPIO_Pin_3,GPIO_Pin_4,GPIO_Pin_7};
 int main(void)
 {
 
@@ -284,11 +296,15 @@ int main(void)
     USART1_Init();
 
     NVIC_Configure();
-
+    int index=0;
     while (1)
     {
         // TODO: implement
-
+      GPIO_WriteBit(GPIOD,seq[index],Bit_SET); 
+      Delay();
+      GPIO_WriteBit(GPIOD,seq[index],Bit_RESET); 
+      index+=1;
+      index%=4;
         // Delay
         Delay();
     }
