@@ -303,8 +303,14 @@ int main(void)
       GPIO_WriteBit(GPIOD,seq[index],Bit_SET); 
       Delay();
       GPIO_WriteBit(GPIOD,seq[index],Bit_RESET); 
-      index+=1;
-      index%=4;
+      if (flag==0){
+        index+=1;
+        }
+        else{
+            if (index<=0) index=4;
+            index-=1;
+        }
+    index%=4;
         // Delay
         Delay();
     }
