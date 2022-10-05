@@ -112,7 +112,7 @@ void EXTI_Configure(void)
     EXTI_InitStructure.EXTI_LineCmd = ENABLE;
     EXTI_Init(&EXTI_InitStructure);
 
-	/* 필요없음 Joystick Selection */
+    /* 필요없음 Joystick Selection */
     
     /* Button  PD11 */
 	GPIO_EXTILineConfig(GPIO_PortSourceGPIOD, GPIO_PinSource11);
