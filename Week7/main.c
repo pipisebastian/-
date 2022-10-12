@@ -20,8 +20,6 @@ void EXTI15_10_IRQHandler(void);
 void Delay(void);
 
 void sendDataUART1(uint16_t data);
-
-int flag = 0;
 //---------------------------------------------------------------------------------------------------
 
 void RCC_Configure(void){
