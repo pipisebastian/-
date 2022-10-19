@@ -13,35 +13,35 @@ uint16_t DeviceCode;
 /* Private typedef -----------------------------------------------------------*/
 
 /* private function---------------------------------------------------------- */
-
 static void LCD_WR_REG(uint16_t LCD_Reg)
 {
-	// TODO implement using GPIO_ResetBits/GPIO_SetBits
-	GPIO_ResetBits(GPIOC, GPIO_Pin_6);  // LCD_CS(0);
-        GPIO_ResetBits(GPIOD, GPIO_Pin_13);   // LCD_RS(0);
-        GPIO_ResetBits(GPIOD, GPIO_Pin_14); // LCD_WR(0);
+	// LCD_CS : PC6
+	// LCD_WR : PD14
+	// LCD_RS : PD13 (D/C : 핀맵상 RS)
+	// LCD_RD : PD15
+	// NOTE implement using GPIO_ResetBits/GPIO_SetBits
+	GPIO_ResetBits(GPIOD, GPIO_Pin_13); // LCD_RS -> LOW
+	GPIO_ResetBits(GPIOC, GPIO_Pin_6);  // LCD_CS -> LOW
+	GPIO_ResetBits(GPIOD, GPIO_Pin_14); // LCD_WR -> LOW
+	GPIO_SetBits(GPIOD, GPIO_Pin_15);   // LCD_RD -> HIGH
 	GPIO_Write(GPIOE, LCD_Reg);
-        GPIO_SetBits(GPIOD, GPIO_Pin_15); // LCD_RD(1);
-        GPIO_SetBits(GPIOC, GPIO_Pin_6);  // LCD_CS(1);
-
-	// TODO implement using GPIO_ResetBits/GPIO_SetBits
+	GPIO_SetBits(GPIOC, GPIO_Pin_6);    // LCD_CS -> HIGH 돌려 놓기
+	GPIO_SetBits(GPIOD, GPIO_Pin_14);   // LCD_WR -> HIGH 돌려 놓기
 	
 }
 
 static void LCD_WR_DATA(uint16_t LCD_Data)
 {
-	// TODO implement using GPIO_ResetBits/GPIO_SetBits
-	GPIO_ResetBits(GPIOC, GPIO_Pin_6);  // LCD_CS(0);
-        GPIO_SetBits(GPIOD, GPIO_Pin_13);   // LCD_RS(1);
-        GPIO_ResetBits(GPIOD, GPIO_Pin_14); // LCD_WR(0);
-
+	// NOTE implement using GPIO_ResetBits/GPIO_SetBits
+	GPIO_ResetBits(GPIOD, GPIO_Pin_13); // LCD_RS -> HIGH
+	GPIO_ResetBits(GPIOC, GPIO_Pin_6);  // LCD_CS -> LOW
+	GPIO_ResetBits(GPIOD, GPIO_Pin_14); // LCD_WR -> LOW
+	GPIO_ResetBits(GPIOD, GPIO_Pin_15); // LCD_RD -> LOW
 	GPIO_Write(GPIOE, LCD_Data);
-        
-        GPIO_SetBits(GPIOD, GPIO_Pin_15); // LCD_RD(1);
-        GPIO_SetBits(GPIOC, GPIO_Pin_6);  // LCD_CS(1);
-
-        
-	// TODO implement using GPIO_ResetBits/GPIO_SetBits	
+	GPIO_SetBits(GPIOC, GPIO_Pin_6);    // LCD_CS -> HIGH
+	GPIO_SetBits(GPIOD, GPIO_Pin_14);   // LCD_WR -> HIGH 돌려 놓기
+	GPIO_SetBits(GPIOD, GPIO_Pin_15);   // LCD_RD -> HIGH
+	
 }
 
 static uint16_t LCD_ReadReg(uint16_t LCD_Reg)
