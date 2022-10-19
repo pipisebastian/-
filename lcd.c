@@ -13,35 +13,34 @@ uint16_t DeviceCode;
 /* Private typedef -----------------------------------------------------------*/
 
 /* private function---------------------------------------------------------- */
+
 static void LCD_WR_REG(uint16_t LCD_Reg)
 {
-	// LCD_CS : PC6
-	// LCD_WR : PD14
-	// LCD_RS : PD13 (D/C : 핀맵상 RS)
-	// LCD_RD : PD15
-	// NOTE implement using GPIO_ResetBits/GPIO_SetBits
-	GPIO_ResetBits(GPIOD, GPIO_Pin_13); // LCD_RS -> LOW
-	GPIO_ResetBits(GPIOC, GPIO_Pin_6);  // LCD_CS -> LOW
-	GPIO_ResetBits(GPIOD, GPIO_Pin_14); // LCD_WR -> LOW
-	GPIO_SetBits(GPIOD, GPIO_Pin_15);   // LCD_RD -> HIGH
+	// TODO implement using GPIO_ResetBits/GPIO_SetBits
+	GPIO_ResetBits(GPIOC, GPIO_Pin_6);	// LCD_CS(0);
+	GPIO_ResetBits(GPIOD, GPIO_Pin_13); // LCD_RS(0);
+	GPIO_ResetBits(GPIOD, GPIO_Pin_14); // LCD_WR(0);
 	GPIO_Write(GPIOE, LCD_Reg);
-	GPIO_SetBits(GPIOC, GPIO_Pin_6);    // LCD_CS -> HIGH 돌려 놓기
-	GPIO_SetBits(GPIOD, GPIO_Pin_14);   // LCD_WR -> HIGH 돌려 놓기
-	
+	GPIO_SetBits(GPIOD, GPIO_Pin_15); // LCD_RD(1);
+	GPIO_SetBits(GPIOC, GPIO_Pin_6);	// LCD_CS(1);
+
+	// TODO implement using GPIO_ResetBits/GPIO_SetBits
 }
 
 static void LCD_WR_DATA(uint16_t LCD_Data)
 {
-	// NOTE implement using GPIO_ResetBits/GPIO_SetBits
-	GPIO_ResetBits(GPIOD, GPIO_Pin_13); // LCD_RS -> HIGH
-	GPIO_ResetBits(GPIOC, GPIO_Pin_6);  // LCD_CS -> LOW
-	GPIO_ResetBits(GPIOD, GPIO_Pin_14); // LCD_WR -> LOW
-	GPIO_ResetBits(GPIOD, GPIO_Pin_15); // LCD_RD -> LOW
+	// TODO implement using GPIO_ResetBits/GPIO_SetBits
+	GPIO_ResetBits(GPIOC, GPIO_Pin_6);	// LCD_CS(0);
+	GPIO_ResetBits(GPIOD, GPIO_Pin_14); // LCD_WR(0);
+	GPIO_SetBits(GPIOD, GPIO_Pin_13);		// LCD_RS(1);
+	GPIO_SetBits(GPIOD, GPIO_Pin_15);		// LCD_RD(1);
+
 	GPIO_Write(GPIOE, LCD_Data);
-	GPIO_SetBits(GPIOC, GPIO_Pin_6);    // LCD_CS -> HIGH
-	GPIO_SetBits(GPIOD, GPIO_Pin_14);   // LCD_WR -> HIGH 돌려 놓기
-	GPIO_SetBits(GPIOD, GPIO_Pin_15);   // LCD_RD -> HIGH
-	
+
+	GPIO_SetBits(GPIOD, GPIO_Pin_14); // LCD_WR(1);
+	GPIO_SetBits(GPIOC, GPIO_Pin_6);	// LCD_CS(1);
+
+	// TODO implement using GPIO_ResetBits/GPIO_SetBits
 }
 
 static uint16_t LCD_ReadReg(uint16_t LCD_Reg)
@@ -57,12 +56,12 @@ static uint16_t LCD_ReadReg(uint16_t LCD_Reg)
 	GPIO_InitStructure.GPIO_Mode = GPIO_Mode_IPU;
 	GPIO_Init(GPIOE, &GPIO_InitStructure);
 
-	GPIO_ResetBits(GPIOC, GPIO_Pin_6);  // LCD_CS(0);
-	GPIO_SetBits(GPIOD, GPIO_Pin_13);   // LCD_RS(1);
+	GPIO_ResetBits(GPIOC, GPIO_Pin_6);	// LCD_CS(0);
+	GPIO_SetBits(GPIOD, GPIO_Pin_13);		// LCD_RS(1);
 	GPIO_ResetBits(GPIOD, GPIO_Pin_15); // LCD_RD(0);
 	temp = GPIO_ReadInputData(GPIOE);
 	GPIO_SetBits(GPIOD, GPIO_Pin_15); // LCD_RD(1);
-	GPIO_SetBits(GPIOC, GPIO_Pin_6);  // LCD_CS(1);
+	GPIO_SetBits(GPIOC, GPIO_Pin_6);	// LCD_CS(1);
 
 	// Read Done, Reset
 	GPIO_InitStructure.GPIO_Pin = GPIO_Pin_All;
@@ -153,7 +152,7 @@ void LCD_Init(void)
 		LCD_WriteReg(0x000c, 0x0001);
 		LCD_WriteReg(0x000d, 0x0000);
 		LCD_WriteReg(0x000f, 0x0000);
-		//Power On sequence //
+		// Power On sequence //
 		LCD_WriteReg(0x0010, 0x0000);
 		LCD_WriteReg(0x0011, 0x0007);
 		LCD_WriteReg(0x0012, 0x0000);
@@ -242,7 +241,7 @@ void LCD_Init(void)
 		LCD_WriteReg(0x2E, 0x7E45); /* VCOM charge sharing time */
 		/*--------- Turn On display ------------*/
 		LCD_WriteReg(0x10, 0x0000); /* Sleep mode off */
-		LCD_Delay(3);				/* Wait 30mS  */
+		LCD_Delay(3);								/* Wait 30mS  */
 		LCD_WriteReg(0x11, 0x6870); /* Entry mode setup. 262K type B, take care on the data bus with 16it only */
 		LCD_WriteReg(0x07, 0x0033); /* Display ON	*/
 
@@ -263,7 +262,7 @@ void LCD_Clear(uint16_t Color)
 }
 
 void LCD_Fill(uint8_t xsta, uint16_t ysta, uint8_t xend, uint16_t yend,
-			  uint16_t colour)
+							uint16_t colour)
 {
 	u32 n;
 
@@ -294,14 +293,14 @@ void LCD_SetCursor(u16 Xpos, u16 Ypos)
 }
 // REV 1.0 @MODIFIED
 void LCD_WindowMax(unsigned int x, unsigned int y, unsigned int x_end,
-				   unsigned int y_end)
+									 unsigned int y_end)
 {
-        LCD_WriteReg(0x50, x);
-        LCD_WriteReg(0x51, x_end);
-        LCD_WriteReg(0x52, y);
-        LCD_WriteReg(0x53, y_end);
-        
-        LCD_SetCursor(x, y);
+	LCD_WriteReg(0x50, x);
+	LCD_WriteReg(0x51, x_end);
+	LCD_WriteReg(0x52, y);
+	LCD_WriteReg(0x53, y_end);
+
+	LCD_SetCursor(x, y);
 }
 
 void LCD_DrawPoint(uint16_t xsta, uint16_t ysta)
@@ -384,7 +383,7 @@ void LCD_DrawCircle(uint16_t x0, uint16_t y0, uint8_t r)
 }
 
 void LCD_DrawRectangle(uint16_t xsta, uint16_t ysta, uint16_t xend,
-					   uint16_t yend)
+											 uint16_t yend)
 {
 	LCD_DrawLine(xsta, ysta, xend, ysta);
 	LCD_DrawLine(xsta, ysta, xsta, yend);
@@ -427,7 +426,7 @@ void LCD_ShowChar(u8 x, u16 y, u8 num, u8 size, u16 PenColor, u16 BackColor)
 }
 
 void LCD_ShowCharString(uint16_t x, uint16_t y, const uint8_t *p,
-						uint16_t PenColor, uint16_t BackColor)
+												uint16_t PenColor, uint16_t BackColor)
 {
 	uint8_t size = 16;
 
