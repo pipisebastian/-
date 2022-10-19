@@ -11,3 +11,7 @@
 :four: 조이스틱 및 스위치로 모터 제어
 
 :five: 버튼으로 USART 통신하여 오실로스코프 및 putty에 결과 출력
+
+:six: 조이스틱과 Putty(UART)을 이용한 led 순차 제어
+
+:seven: Putty와 Bluetooth 모듈간 통신을 위한 펌웨어 작성
