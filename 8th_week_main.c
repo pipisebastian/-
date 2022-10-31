@@ -97,15 +97,15 @@ void ADC1_2_IRQHandler(void) {
     ADC1_CONVERTED_VALUE = ADC_GetConversionValue(ADC1);
 }
 
+int color[12] = {WHITE,CYAN,BLUE,RED,MAGENTA,LGRAY,GREEN,YELLOW,BROWN,BRRED,GRAY};
+
 int main(void)
 {
 
     SystemInit();
     RCC_Configure();
     GPIO_Configure();
-    //ADC_Configure();
     NVIC_Configure();
-    //
     
     LCD_Init();
     Touch_Configuration();
@@ -113,7 +113,6 @@ int main(void)
     LCD_Clear(WHITE);
     ADC_Configure();
     
-    char * str = "TEAM03\0";
     uint16_t x;
     uint16_t y;
     uint16_t convert_x;
@@ -124,10 +123,11 @@ int main(void)
         if (T_INT != 1) {
           LCD_ShowNum(0x10, 0x60, convert_x, 16, BLACK, WHITE);
           LCD_ShowNum(0x10, 0x50, convert_y, 16, BLACK, WHITE);
-          LCD_DrawRectangle(convert_x, convert_y, convert_x + 10, convert_y + 10);
+          //LCD_DrawRectangle(convert_x, convert_y, convert_x + 10, convert_y + 10);
+          LCD_DrawCircle(convert_x,convert_y,4);
           Delay();
         }
-        LCD_ShowString(100, 50, "TEAM03", BLACK, WHITE );
+        LCD_ShowString(0x45, 0x30, "WED_TEAM03", BLACK, WHITE );
         LCD_ShowNum(0x10, 0x80, ADC1_CONVERTED_VALUE, 16, BLACK, WHITE);
     }
     return 0;
