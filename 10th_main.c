@@ -8,7 +8,6 @@
 #include "misc.h"
 
 
-uint16_t value = 100;
 int flag = 1;
 int ledCount = 0;
 
@@ -113,12 +112,6 @@ void PWM_Configure2()
      TIM_TimeBaseStructure.TIM_ClockDivision = 0;
      TIM_TimeBaseStructure.TIM_CounterMode = TIM_CounterMode_Down;
 
-     TIM_OCInitStructure.TIM_OCMode = TIM_OCMode_PWM1;
-     TIM_OCInitStructure.TIM_OCPolarity = TIM_OCPolarity_High;
-     TIM_OCInitStructure.TIM_OutputState = TIM_OutputState_Enable;
-     TIM_OCInitStructure.TIM_Pulse = 1500; // us
-     TIM_OC3Init(TIM3, &TIM_OCInitStructure);
-
      TIM_TimeBaseInit(TIM3, &TIM_TimeBaseStructure);
      TIM_OC3PreloadConfig(TIM3, TIM_OCPreload_Disable);
      TIM_ARRPreloadConfig(TIM3, ENABLE);
@@ -152,8 +145,6 @@ int main(void)
       LCD_Clear(WHITE); // LCD 배경 초기화
 
       //-----------------
-      uint16_t rotation[2] = {700, 2300};
-      int i = 0;
 
       uint16_t x;
       uint16_t y;
@@ -163,7 +154,7 @@ int main(void)
        LCD_ShowString(40, 10, "WED_TEAM03", BLUE, WHITE);
        LCD_ShowString(90, 50, "OFF", RED, WHITE);
        LCD_DrawRectangle(40, 80, 80, 120);
-       LCD_ShowString(50,90, "BUT", RED, WHITE);
+       LCD_ShowString(50,90, "BUT", BLUE, WHITE);
       
       while (1) {
            Touch_GetXY(&x, &y, 1); // 터치 좌표 받아서 배열에 입력
@@ -183,14 +174,6 @@ int main(void)
               flag++;
               flag %= 2;
            }
-
-           TIM_OCInitStructure.TIM_OCMode = TIM_OCMode_PWM1;
-           TIM_OCInitStructure.TIM_OCPolarity = TIM_OCPolarity_High;
-           TIM_OCInitStructure.TIM_OutputState = TIM_OutputState_Enable;
-           TIM_OCInitStructure.TIM_Pulse = rotation[i]; // us
-           TIM_OC3Init(TIM3, &TIM_OCInitStructure);
-            i++;
-            i %= 2;
             delay();
 
       }
