@@ -17,3 +17,5 @@
 :seven: Putty와 Bluetooth 모듈간 통신을 위한 펌웨어 작성
 
 :eight: TFT-LCD Touch 동작을 제어하여 조도 센서 값 출력
+
+:ten: LCD Touch 동작으로 Timer/LED 제어 
