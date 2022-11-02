@@ -29,6 +29,7 @@ void RCC_Configure(void)
     
     /* ADC */
     RCC_APB2PeriphClockCmd(RCC_APB2Periph_ADC1, ENABLE);
+    
     RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOC, ENABLE);
 }
 
@@ -76,7 +77,7 @@ void NVIC_Configure(void) {
     // TODO: Initialize the NVIC using the structure 'NVIC_InitTypeDef' and the function 'NVIC_Init'
     
     // 'NVIC_EnableIRQ' is only required for USART setting
-    NVIC_EnableIRQ(ADC1_2_IRQn);
+    // NVIC_EnableIRQ(USART1_IRQn);
     NVIC_InitStructure.NVIC_IRQChannel = ADC1_2_IRQn;
     NVIC_InitStructure.NVIC_IRQChannelPreemptionPriority = 0; // TODO
     NVIC_InitStructure.NVIC_IRQChannelSubPriority = 0; // TODO
@@ -93,10 +94,10 @@ void Delay(void) {
 
 void ADC1_2_IRQHandler(void) {
     uint16_t diff = ADC_GetConversionValue(ADC1) - ADC1_CONVERTED_VALUE;
-    if (diff < -500 || diff > 500) {
-        ADC1_CONVERTED_VALUE = ADC_GetConversionValue(ADC1);
-    }
+    ADC1_CONVERTED_VALUE = ADC_GetConversionValue(ADC1);
 }
+
+int color[12] = {WHITE,CYAN,BLUE,RED,MAGENTA,LGRAY,GREEN,YELLOW,BROWN,BRRED,GRAY};
 
 int main(void)
 {
@@ -104,37 +105,31 @@ int main(void)
     SystemInit();
     RCC_Configure();
     GPIO_Configure();
-    ADC_Configure();
     NVIC_Configure();
     
     LCD_Init();
     Touch_Configuration();
     Touch_Adjust();
-
     LCD_Clear(WHITE);
-    LCD_ShowString(0x50, 0x35, "MON_Team03", BLACK, WHITE);
+    ADC_Configure();
     
     uint16_t x;
     uint16_t y;
     uint16_t convert_x;
     uint16_t convert_y;
     while(1) {
-      
         Touch_GetXY(&x, &y, 0);
         Convert_Pos(x, y, &convert_x, &convert_y);
-        
         if (T_INT != 1) {
           LCD_ShowNum(0x10, 0x60, convert_x, 16, BLACK, WHITE);
           LCD_ShowNum(0x10, 0x50, convert_y, 16, BLACK, WHITE);
           //LCD_DrawRectangle(convert_x, convert_y, convert_x + 10, convert_y + 10);
-          LCD_DrawRectangle(convert_x, convert_y, convert_x + 10, convert_y + 10);
-          //LCD_DrawCircle(convert_x,convert_y,4);
+          LCD_DrawCircle(convert_x,convert_y,4);
+          LCD_ShowNum(0x10, 0x80, ADC1_CONVERTED_VALUE, 16, BLACK, WHITE);
           Delay();
         }
-        ADC_ITConfig(ADC1, ADC_IT_EOC, ENABLE); // interrupt enable
+        LCD_ShowString(0x45, 0x30, "WED_TEAM03", BLACK, WHITE );
         
-        ADC_ITConfig(ADC1, ADC_IT_EOC, ENABLE); // interrupt enable  
-        LCD_ShowNum(0x10, 0x80, ADC1_CONVERTED_VALUE, 16, BLACK, WHITE);
     }
-    return 0;  
+    return 0;
 }
