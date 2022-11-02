@@ -24,6 +24,7 @@ void RCC_Configure(void)
       RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOC, ENABLE); // port C RCC ENABLE
       /* PWM */
       RCC_APB1PeriphClockCmd(RCC_APB1Periph_TIM2, ENABLE); // TIM2
+      RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOB, ENABLE); // Port B
       /* LED */
       RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOD, ENABLE); // Port D
       RCC_APB2PeriphClockCmd(RCC_APB2Periph_AFIO, ENABLE);
@@ -32,11 +33,18 @@ void RCC_Configure(void)
 
 void GPIO_Configure(void)
 {
-
+    /* LED */
     GPIO_InitTypeDef GPIO_InitStructure3;
     GPIO_InitStructure3.GPIO_Pin = GPIO_Pin_2 | GPIO_Pin_3;
     GPIO_InitStructure3.GPIO_Mode = GPIO_Mode_Out_PP;
-    GPIO_Init(GPIOD, &GPIO_InitStructure3); // led 활성화
+    GPIO_Init(GPIOD, &GPIO_InitStructure3);
+
+    /* PWM */
+    GPIO_InitTypeDef GPIO_InitStructure2;
+    GPIO_InitStructure2.GPIO_Pin = GPIO_Pin_0;
+    GPIO_InitStructure2.GPIO_Speed = GPIO_Speed_50MHz;
+    GPIO_InitStructure2.GPIO_Mode = GPIO_Mode_AF_PP;
+    GPIO_Init(GPIOB, &GPIO_InitStructure2);
 
 }
 
@@ -79,7 +87,7 @@ void TIM2_IRQHandler(void) {
 void TIM_Configure()
 {
      uint16_t prescale = (uint16_t) (SystemCoreClock / 10000);
-     
+
      TIM_TimeBaseInitTypeDef TIM_TimeBaseStructure;
      TIM_TimeBaseStructure.TIM_Period = 10000;
      TIM_TimeBaseStructure.TIM_Prescaler = prescale;
