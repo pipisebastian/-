@@ -4,7 +4,7 @@
 
 ## 주차별 미션
 
-:zero: :two:   환경 설정 및 컴파일, 업로드
+:zero: :two:   &nbsp&nbsp&nbsp환경 설정 및 컴파일, 업로드
 
 :zero: :three:   조이스틱 Up, Down, Right, Left 제어 및 LED 점등
 
