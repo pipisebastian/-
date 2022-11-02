@@ -163,7 +163,7 @@ int main(void)
        LCD_ShowString(40, 10, "WED_TEAM03", BLUE, WHITE);
        LCD_ShowString(90, 50, "OFF", RED, WHITE);
        LCD_DrawRectangle(40, 80, 80, 120);
-       LCD_ShowString(50,90, "BUT", BLUE, WHITE);
+       LCD_ShowString(50,90, "BUT", RED, WHITE);
       
       while (1) {
            Touch_GetXY(&x, &y, 1); // 터치 좌표 받아서 배열에 입력
