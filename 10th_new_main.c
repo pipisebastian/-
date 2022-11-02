@@ -41,7 +41,7 @@ void GPIO_Configure(void)
 
     /* PWM */
     GPIO_InitTypeDef GPIO_InitStructure2;
-    GPIO_InitStructure2.GPIO_Pin = GPIO_Pin_0;
+    GPIO_InitStructure2.GPIO_Pin = GPIO_Pin_10;
     GPIO_InitStructure2.GPIO_Speed = GPIO_Speed_50MHz;
     GPIO_InitStructure2.GPIO_Mode = GPIO_Mode_AF_PP;
     GPIO_Init(GPIOB, &GPIO_InitStructure2);
