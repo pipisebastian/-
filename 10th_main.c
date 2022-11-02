@@ -11,10 +11,6 @@
 int flag = 1;
 int ledCount = 0;
 
-TIM_TimeBaseInitTypeDef TIM_TimeBaseStructure;
-TIM_OCInitTypeDef       TIM_OCInitStructure;
-uint16_t prescale;
-
 /* function prototype */
 void RCC_Configure(void);
 void GPIO_Configure(void);
@@ -28,8 +24,6 @@ void RCC_Configure(void)
       RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOC, ENABLE); // port C RCC ENABLE
       /* PWM */
       RCC_APB1PeriphClockCmd(RCC_APB1Periph_TIM2, ENABLE); // TIM2
-      RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOB, ENABLE); // Port B
-      RCC_APB1PeriphClockCmd(RCC_APB1Periph_TIM3, ENABLE); // TIM3
       /* LED */
       RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOD, ENABLE); // Port D
       RCC_APB2PeriphClockCmd(RCC_APB2Periph_AFIO, ENABLE);
@@ -38,18 +32,12 @@ void RCC_Configure(void)
 
 void GPIO_Configure(void)
 {
-
+    /* LED */
     GPIO_InitTypeDef GPIO_InitStructure3;
     GPIO_InitStructure3.GPIO_Pin = GPIO_Pin_2 | GPIO_Pin_3;
+    GPIO_InitStructure3.GPIO_Speed = GPIO_Speed_50MHz;
     GPIO_InitStructure3.GPIO_Mode = GPIO_Mode_Out_PP;
-    GPIO_Init(GPIOD, &GPIO_InitStructure3); // led 활성화
-
-   /* PWM */
-    GPIO_InitTypeDef GPIO_InitStructure2;
-    GPIO_InitStructure2.GPIO_Pin = GPIO_Pin_0;
-    GPIO_InitStructure2.GPIO_Speed = GPIO_Speed_50MHz;
-    GPIO_InitStructure2.GPIO_Mode = GPIO_Mode_AF_PP;
-    GPIO_Init(GPIOB, &GPIO_InitStructure2);
+    GPIO_Init(GPIOD, &GPIO_InitStructure3);
 
 }
 
@@ -89,10 +77,11 @@ void TIM2_IRQHandler(void) {
       }
 }
 
-void PWM_Configure1()
+void TIM_Configure()
 {
-     prescale = (uint16_t) (SystemCoreClock / 10000);
+     uint16_t prescale = (uint16_t) (SystemCoreClock / 10000);
 
+     TIM_TimeBaseInitTypeDef TIM_TimeBaseStructure;
      TIM_TimeBaseStructure.TIM_Period = 10000;
      TIM_TimeBaseStructure.TIM_Prescaler = prescale;
      TIM_TimeBaseStructure.TIM_ClockDivision = 0;
@@ -101,21 +90,6 @@ void PWM_Configure1()
      TIM_TimeBaseInit(TIM2, &TIM_TimeBaseStructure);
      TIM_ARRPreloadConfig(TIM2, ENABLE);
      TIM_Cmd(TIM2, ENABLE);
-}
-
-void PWM_Configure2()
-{
-     prescale = (uint16_t) (SystemCoreClock / 100000);
-
-     TIM_TimeBaseStructure.TIM_Period = 20000;
-     TIM_TimeBaseStructure.TIM_Prescaler = prescale;
-     TIM_TimeBaseStructure.TIM_ClockDivision = 0;
-     TIM_TimeBaseStructure.TIM_CounterMode = TIM_CounterMode_Down;
-
-     TIM_TimeBaseInit(TIM3, &TIM_TimeBaseStructure);
-     TIM_OC3PreloadConfig(TIM3, TIM_OCPreload_Disable);
-     TIM_ARRPreloadConfig(TIM3, ENABLE);
-     TIM_Cmd(TIM3, ENABLE);
 }
 
 void delay()
@@ -132,8 +106,7 @@ int main(void)
       SystemInit();
       RCC_Configure();
       GPIO_Configure();
-      PWM_Configure1();
-      PWM_Configure2();
+      TIM_Configure();
 
       NVIC_Configure();
 
