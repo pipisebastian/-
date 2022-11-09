@@ -9,17 +9,15 @@
 #include "lcd.h"
 #include "touch.h"
 
-//NOTE 인터럽트 안씀 , NVIC 제거
-
 /* function prototype */
 void RCC_Configure(void);
 void GPIO_Configure(void);
 void EXTI_Configure(void);
 void ADC_Configure(void);
-void DMA_Configure(void); //NOTE DMA
+void DMA_Configure(void); // DMA
 void Delay(void);
 
- //NOTE ADC값 저장
+ // ADC값 저장
 volatile uint32_t ADC_Value[1];
 
 void RCC_Configure(void)
@@ -32,7 +30,7 @@ void RCC_Configure(void)
     
     RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOC, ENABLE);
 
-    /* NOTE DMA */
+    /* DMA */
     RCC_AHBPeriphClockCmd(RCC_AHBPeriph_DMA1, ENABLE);
 }
 
@@ -47,7 +45,7 @@ void ADC_Configure(void) {
     
     ADC_Init(ADC1, &ADC_InitStructure);
     ADC_RegularChannelConfig(ADC1, ADC_Channel_10, 1, ADC_SampleTime_239Cycles5);
-    //NOTE  ADC_ITConfig -> ADC_DMACmd (ppt)
+    // ADC_ITConfig -> ADC_DMACmd (ppt)
     ADC_DMACmd(ADC1, ENABLE);
     ADC_Cmd(ADC1, ENABLE);
     ADC_ResetCalibration(ADC1);
@@ -57,15 +55,14 @@ void ADC_Configure(void) {
     ADC_SoftwareStartConvCmd(ADC1, ENABLE);
 }
 
-//NOTE 왕중요! DMA 설정!!!! http://stm32.kosyak.info/doc/struct_d_m_a___init_type_def.html 참고
 void DMA_Configure(void) {
 
     DMA_InitTypeDef DMA_InitStructure;
     DMA_InitStructure.DMA_PeripheralBaseAddr = (uint32_t) &ADC1->DR;  //ADC 어디서 불러올지
     DMA_InitStructure.DMA_MemoryBaseAddr = (uint32_t) &ADC_Value; // 저장할 주소(버퍼)
-    DMA_InitStructure.DMA_DIR = DMA_DIR_PeripheralSRC;
-    DMA_InitStructure.DMA_BufferSize = 1;
-    DMA_InitStructure.DMA_PeripheralInc = DMA_PeripheralInc_Disable ;
+    DMA_InitStructure.DMA_DIR = DMA_DIR_PeripheralSRC; // Read from peripheral
+    DMA_InitStructure.DMA_BufferSize = 1; // 조도센서 값 한개
+    DMA_InitStructure.DMA_PeripheralInc = DMA_PeripheralInc_Disable; // 주변 레지스터의 추가 안 됨
 
     DMA_InitStructure.DMA_MemoryInc = DMA_MemoryInc_Enable;//여기를 Enable해야 메모리 주소르 증가시키면서 다음메모리에 정보 씀
     DMA_InitStructure.DMA_PeripheralDataSize = DMA_PeripheralDataSize_Word; // 32bit
@@ -82,7 +79,6 @@ void DMA_Configure(void) {
 void GPIO_Configure(void) // 조도센서 C0 input mode 설정
 {
     GPIO_InitTypeDef GPIO_InitStructure;
-    // ADC
     GPIO_InitStructure.GPIO_Pin = GPIO_Pin_0;
     GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
     GPIO_InitStructure.GPIO_Mode = GPIO_Mode_AIN;
@@ -94,13 +90,6 @@ void Delay(void) {
     for (i = 0; i < 2000000; i++) {}
 }
 
-//NOTE ADC값 인터럽트 함수도 이제 필요없음!
-// void ADC1_2_IRQHandler(void) {
-//     uint16_t diff = ADC_GetConversionValue(ADC1) - ADC1_CONVERTED_VALUE;
-//     ADC1_CONVERTED_VALUE = ADC_GetConversionValue(ADC1);
-// }
-
-int color[12] = {WHITE,CYAN,BLUE,RED,MAGENTA,LGRAY,GREEN,YELLOW,BROWN,BRRED,GRAY};
 int main(void)
 {
 
@@ -113,17 +102,17 @@ int main(void)
     Touch_Adjust();
     LCD_Clear(WHITE);
     ADC_Configure();
-    DMA_Configure(); // NOTE DMA
+    DMA_Configure(); // DMA
     
 
     while(1) {
-        if(  ADC_Value[0] < 200 ){ // 플래시 비출때 == ADC_Value[0] 값이 200이상, 이하
-            //NOTE 화면 회색
+        if(  ADC_Value[0] < 200 ){ // 플래시 비출때
+            // 화면 회색
              LCD_Clear(WHITE); //배경 바꾸면 글자색도 사라짐 -> 업데이트
              LCD_ShowNum(0x10, 0x80, ADC_Value[0], 16, BLACK, WHITE);
         }
         else { //플래시 안 비출때
-            //NOTE 화면 흰색
+            // 화면 흰색
              LCD_Clear(GRAY);
              LCD_ShowNum(0x10, 0x80, ADC_Value[0], 16, BLACK, GRAY);
         }
