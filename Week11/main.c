@@ -5,6 +5,7 @@
 #include "stm32f10x_rcc.h"
 #include "stm32f10x_usart.h"
 #include "stm32f10x_adc.h"
+#include "stm32f10x_dma.h"
 #include "lcd.h"
 #include "touch.h"
 
@@ -32,7 +33,7 @@ void RCC_Configure(void)
     RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOC, ENABLE);
 
     /* NOTE DMA */
-    RCC_APB2PeriphClockCmd(RCC_APB2Periph_DMA1, ENABLE);
+    RCC_AHBPeriphClockCmd(RCC_AHBPeriph_DMA1, ENABLE);
 }
 
 void ADC_Configure(void) {
@@ -47,7 +48,7 @@ void ADC_Configure(void) {
     ADC_Init(ADC1, &ADC_InitStructure);
     ADC_RegularChannelConfig(ADC1, ADC_Channel_10, 1, ADC_SampleTime_239Cycles5);
     //NOTE  ADC_ITConfig -> ADC_DMACmd (ppt)
-    ADC_DMACmd(ADC1, ADC_IT_EOC, ENABLE);
+    ADC_DMACmd(ADC1, ENABLE);
     ADC_Cmd(ADC1, ENABLE);
     ADC_ResetCalibration(ADC1);
     while(ADC_GetResetCalibrationStatus(ADC1));
@@ -100,7 +101,6 @@ void Delay(void) {
 // }
 
 int color[12] = {WHITE,CYAN,BLUE,RED,MAGENTA,LGRAY,GREEN,YELLOW,BROWN,BRRED,GRAY};
-
 int main(void)
 {
 
@@ -119,13 +119,13 @@ int main(void)
     while(1) {
         if(  ADC_Value[0] < 200 ){ // 플래시 비출때 == ADC_Value[0] 값이 200이상, 이하
             //NOTE 화면 회색
-             LCD_Clear(GRAY); //배경 바꾸면 글자색도 사라짐 -> 업데이트
+             LCD_Clear(WHITE); //배경 바꾸면 글자색도 사라짐 -> 업데이트
              LCD_ShowNum(0x10, 0x80, ADC_Value[0], 16, BLACK, WHITE);
         }
         else { //플래시 안 비출때
             //NOTE 화면 흰색
-             LCD_Clear(WHITE);
-             LCD_ShowNum(0x10, 0x80, ADC_Value[0], 16, BLACK, WHITE);
+             LCD_Clear(GRAY);
+             LCD_ShowNum(0x10, 0x80, ADC_Value[0], 16, BLACK, GRAY);
         }
         
         
