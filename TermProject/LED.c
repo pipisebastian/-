@@ -15,6 +15,8 @@ void LED_Init(void);
 // PE2, PE3, PE4를 이용함
 
 void LED_RCC_Configure(void) {
+/* Alternate Function IO clock enable */
+  RCC_APB2PeriphClockCmd(RCC_APB2Periph_AFIO, ENABLE);
   RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOE, ENABLE);
 }
 
