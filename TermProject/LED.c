@@ -1,11 +1,15 @@
 #include "stm32f10x.h"
-#include "core_cm3.h"
-#include "misc.h"
+#include "stm32f10x_exti.h"
 #include "stm32f10x_gpio.h"
-#include "stm32f10x_rcc.h"
 #include "stm32f10x_usart.h"
-#include "stm32f10x_adc.h"
-#include "stm32f10x_dma.h"
+#include "stm32f10x_rcc.h"
+#include "stdio.h"
+#include "misc.h"
+
+/* function prototype */
+void LED_RCC_Configure(void);
+void LED_GPIO_Configure(void);
+void LED_Init(void);
 
 // PE2, PE3, PE4를 이용함
 
@@ -16,9 +20,9 @@ void LED_RCC_Configure(void) {
 void LED_GPIO_Configure(void) {
   GPIO_InitTypeDef GPIO_InitStructure;
   // LED Output Mode
-  GPIO_InitStructure.GPIO_Mode = GPIO_Mode_Out_PP; // output mode로
-  GPIO_InitStructure.GPIO_Pin=(GPIO_Pin_2 | GPIO_Pin_3 | GPIO_Pin_4);// PD2,3,4
+  GPIO_InitStructure.GPIO_Pin = GPIO_Pin_2 | GPIO_Pin_3 | GPIO_Pin_4;
   GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
+  GPIO_InitStructure.GPIO_Mode = GPIO_Mode_Out_PP;
   GPIO_Init(GPIOE, &GPIO_InitStructure);
 }
 
@@ -33,8 +37,8 @@ int main(void)
     LED_Init();
 		 
 		//흰색 키기
-		GPIO_SetBits(GPIOE, GPIO_Pin_2); //파랑색 on
-		GPIO_SetBits(GPIOE, GPIO_Pin_3); //초록색 on
-		GPIO_SetBits(GPIOE, GPIO_Pin_4); // 빨간색 on
+		GPIO_WriteBit(GPIOE, GPIO_Pin_2, Bit_SET); //파랑색 on
+		GPIO_WriteBit(GPIOE, GPIO_Pin_3, Bit_SET); //초록색 on
+		GPIO_WriteBit(GPIOE, GPIO_Pin_4, Bit_SET); // 빨간색 on
     return 0;
 }
