@@ -1,9 +1,10 @@
+
 #include "stm32f10x.h"
 #include "stm32f10x_exti.h"
 #include "stm32f10x_gpio.h"
 #include "stm32f10x_usart.h"
 #include "stm32f10x_rcc.h"
-#include "stdio.h"
+#include "touch.h"
 #include "misc.h"
 
 /* function prototype */
@@ -14,7 +15,7 @@ void LED_Init(void);
 // PE2, PE3, PE4를 이용함
 
 void LED_RCC_Configure(void) {
-  RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOE, ENABLE);
+  RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOD, ENABLE);
 }
 
 void LED_GPIO_Configure(void) {
@@ -23,7 +24,7 @@ void LED_GPIO_Configure(void) {
   GPIO_InitStructure.GPIO_Pin = GPIO_Pin_2 | GPIO_Pin_3 | GPIO_Pin_4;
   GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
   GPIO_InitStructure.GPIO_Mode = GPIO_Mode_Out_PP;
-  GPIO_Init(GPIOE, &GPIO_InitStructure);
+  GPIO_Init(GPIOD, &GPIO_InitStructure);
 }
 
 void LED_Init(void) {
@@ -33,12 +34,14 @@ void LED_Init(void) {
 
 int main(void)
 {
-		SystemInit();
-    LED_Init();
+  SystemInit();
+
+  LED_RCC_Configure();
+  LED_GPIO_Configure();
 		 
-		//흰색 키기
-		GPIO_WriteBit(GPIOE, GPIO_Pin_2, Bit_SET); //파랑색 on
-		GPIO_WriteBit(GPIOE, GPIO_Pin_3, Bit_SET); //초록색 on
-		GPIO_WriteBit(GPIOE, GPIO_Pin_4, Bit_SET); // 빨간색 on
-    return 0;
+  //흰색 키기
+  GPIO_SetBits(GPIOD, GPIO_Pin_2); //파랑색 on
+  GPIO_SetBits(GPIOD, GPIO_Pin_3); //초록색 on
+  GPIO_SetBits(GPIOD, GPIO_Pin_4); // 빨간색 on
+  return 0;
 }
