@@ -92,6 +92,16 @@ void TIM3_IRQHandler(void) // 1mS Timer
   }
 }
 
+void Delay_Us(uint32_t us){  
+      if(us>1) {
+            uint32_t count=us*8-6;
+            while(count--); 
+      } else{
+            uint32_t count=2;
+            while(count--); 
+      }
+}
+
 int main(void)
 {
       SystemInit();
