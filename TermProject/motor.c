@@ -38,42 +38,42 @@ void GPIO_Configure(void) //
 }
 void Start(void)
 {
-    GPIO_WriteBit(GPIOD, MotorPin[0], Bit_SET);
-    GPIO_WriteBit(GPIOD, MotorPin[1], Bit_RESET);
-    GPIO_WriteBit(GPIOD, MotorPin[2], Bit_SET);
-    GPIO_WriteBit(GPIOD, MotorPin[3], Bit_RESET);
+    GPIO_WriteBit(GPIOE, MotorPin[0], Bit_SET);
+    GPIO_WriteBit(GPIOE, MotorPin[1], Bit_RESET);
+    GPIO_WriteBit(GPIOE, MotorPin[2], Bit_SET);
+    GPIO_WriteBit(GPIOE, MotorPin[3], Bit_RESET);
 }
 
 void Back(void)
 {
-    GPIO_WriteBit(GPIOD, MotorPin[0], Bit_RESET);
-    GPIO_WriteBit(GPIOD, MotorPin[1], Bit_SET);
-    GPIO_WriteBit(GPIOD, MotorPin[2], Bit_RESET);
-    GPIO_WriteBit(GPIOD, MotorPin[3], Bit_SET);
+    GPIO_WriteBit(GPIOE, MotorPin[0], Bit_RESET);
+    GPIO_WriteBit(GPIOE, MotorPin[1], Bit_SET);
+    GPIO_WriteBit(GPIOE, MotorPin[2], Bit_RESET);
+    GPIO_WriteBit(GPIOE, MotorPin[3], Bit_SET);
 }
 
 void TurnLeft(void)
 {
-    GPIO_WriteBit(GPIOD, MotorPin[0], Bit_RESET);
-    GPIO_WriteBit(GPIOD, MotorPin[1], Bit_SET);
-    GPIO_WriteBit(GPIOD, MotorPin[2], Bit_SET);
-    GPIO_WriteBit(GPIOD, MotorPin[3], Bit_RESET);
+    GPIO_WriteBit(GPIOE, MotorPin[0], Bit_RESET);
+    GPIO_WriteBit(GPIOE, MotorPin[1], Bit_SET);
+    GPIO_WriteBit(GPIOE, MotorPin[2], Bit_SET);
+    GPIO_WriteBit(GPIOE, MotorPin[3], Bit_RESET);
 }
 
 void TurnRight(void)
 {
-    GPIO_WriteBit(GPIOD, MotorPin[0], Bit_SET);
-    GPIO_WriteBit(GPIOD, MotorPin[1], Bit_RESET);
-    GPIO_WriteBit(GPIOD, MotorPin[2], Bit_RESET);
-    GPIO_WriteBit(GPIOD, MotorPin[3], Bit_SET);
+    GPIO_WriteBit(GPIOE, MotorPin[0], Bit_SET);
+    GPIO_WriteBit(GPIOE, MotorPin[1], Bit_RESET);
+    GPIO_WriteBit(GPIOE, MotorPin[2], Bit_RESET);
+    GPIO_WriteBit(GPIOE, MotorPin[3], Bit_SET);
 }
 
 void Stop(void)
 {
-    GPIO_WriteBit(GPIOD, MotorPin[0], Bit_RESET);
-    GPIO_WriteBit(GPIOD, MotorPin[1], Bit_RESET);
-    GPIO_WriteBit(GPIOD, MotorPin[2], Bit_RESET);
-    GPIO_WriteBit(GPIOD, MotorPin[3], Bit_RESET);
+    GPIO_WriteBit(GPIOE, MotorPin[0], Bit_RESET);
+    GPIO_WriteBit(GPIOE, MotorPin[1], Bit_RESET);
+    GPIO_WriteBit(GPIOE, MotorPin[2], Bit_RESET);
+    GPIO_WriteBit(GPIOE, MotorPin[3], Bit_RESET);
 }
 
 void ControlMotorSpeed(int speed)
@@ -93,16 +93,7 @@ int main(void)
     {
         //속도 느리게
         //ControlMotorSpeed(50);
-        Start();
-        Sleep(2000);
-
-        Stop();
-        Sleep(2000);
-
-        //속도 빠르게
-        //ControlMotorSpeed(255);
-        Start();
-        Sleep(2000);
+        TurnLeft();
     }
     return 0;
 }
