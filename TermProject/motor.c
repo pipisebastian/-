@@ -89,6 +89,9 @@ int main(void)
     RCC_Configure();
     GPIO_Configure();
 
+    GPIO_WriteBit(GPIOE, GPIO_Pin_5, Bit_SET);
+	GPIO_WriteBit(GPIOE, GPIO_Pin_6, Bit_SET);
+
     while (1)
     {
         //속도 느리게
