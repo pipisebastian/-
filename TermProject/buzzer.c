@@ -73,7 +73,7 @@ void TIM3_Configure(void)
       TIM_Cmd(TIM3, ENABLE);
 
       /* TIM IT(인터럽트) enable */
-      TIM_ITConfig(TIM23, TIM_IT_Update, ENABLE);
+      TIM_ITConfig(TIM3, TIM_IT_Update, ENABLE);
 }
 
 void TIM3_IRQHandler(void) // 1mS Timer
