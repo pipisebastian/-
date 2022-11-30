@@ -1,5 +1,9 @@
 #include "stm32f10x.h"
-#include "stdio.h"
+#include "stm32f10x_exti.h"
+#include "stm32f10x_gpio.h"
+#include "stm32f10x_usart.h"
+#include "stm32f10x_rcc.h"
+#include "misc.h"
 
 
 #define  U3_BUFFER_SIZE  100
@@ -54,11 +58,15 @@ int Uart3_Is_Empty(void)
     return 0;
 }
 
+//---------------------------------------------------------------------------------------------------
+
 void RCC_Configure(void)
 {
+    // TODO: Enable the APB2 peripheral clock using the function 'RCC_APB2PeriphClockCmd'
+    
     /* UART TX/RX port clock enable */
-    RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOA, ENABLE);
-
+    RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOA,ENABLE);
+    
     /* USART1 clock enable */
     RCC_APB2PeriphClockCmd(RCC_APB2Periph_USART1,ENABLE);
     
@@ -72,8 +80,10 @@ void RCC_Configure(void)
 void GPIO_Configure(void)
 {
     GPIO_InitTypeDef GPIO_InitStructure;
+
+    // TODO: Initialize the GPIO pins using the structure 'GPIO_InitTypeDef' and the function 'GPIO_Init'
     
-    /* UART2 pin setting -> bluetooth */
+    /* UART2 pin setting */
     //TX
     GPIO_InitStructure.GPIO_Pin = GPIO_Pin_2;
     GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
@@ -84,7 +94,8 @@ void GPIO_Configure(void)
     GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
     GPIO_InitStructure.GPIO_Mode = GPIO_Mode_IPD;
     GPIO_Init(GPIOA, &GPIO_InitStructure);
-        /* UART1 pin setting */
+    
+    /* UART1 pin setting */
     //TX
     GPIO_InitStructure.GPIO_Pin = GPIO_Pin_9;
     GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
@@ -94,8 +105,10 @@ void GPIO_Configure(void)
     GPIO_InitStructure.GPIO_Pin = GPIO_Pin_10;
     GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
     GPIO_InitStructure.GPIO_Mode = GPIO_Mode_IPD;
-    GPIO_Init(GPIOA, &GPIO_InitStructure);  
+    GPIO_Init(GPIOA, &GPIO_InitStructure);
+    
 }
+
 void USART1_Init(void)
 {
     USART_InitTypeDef USART1_InitStructure;
@@ -123,6 +136,7 @@ void USART2_Init(void)
     // Enable the USART2 peripheral
     USART_Cmd(USART2, ENABLE);
     
+    // TODO: Initialize the USART using the structure 'USART_InitTypeDef' and the function 'USART_Init'
     USART2_InitStructure.USART_BaudRate = 9600;
     USART2_InitStructure.USART_Mode = USART_Mode_Rx | USART_Mode_Tx ;
     USART2_InitStructure.USART_WordLength = USART_WordLength_8b;
@@ -131,6 +145,7 @@ void USART2_Init(void)
     USART2_InitStructure.USART_HardwareFlowControl = USART_HardwareFlowControl_None;
     USART_Init(USART2, &USART2_InitStructure);
     
+    // TODO: Enable the USART2 RX interrupts using the function 'USART_ITConfig' and the argument value 'Receive Data register not empty interrupt'
     USART_ITConfig(USART2, USART_IT_RXNE,ENABLE);
 }
 
@@ -138,8 +153,11 @@ void NVIC_Configure(void) {
 
     NVIC_InitTypeDef NVIC_InitStructure;
     
+    // TODO: fill the arg you want
     NVIC_PriorityGroupConfig(NVIC_PriorityGroup_0);
-        
+
+    // TODO: Initialize the NVIC using the structure 'NVIC_InitTypeDef' and the function 'NVIC_Init'
+    
     // UART1
     // 'NVIC_EnableIRQ' is only required for USART setting
     NVIC_EnableIRQ(USART1_IRQn);
@@ -153,16 +171,18 @@ void NVIC_Configure(void) {
     // 'NVIC_EnableIRQ' is only required for USART setting
     NVIC_EnableIRQ(USART2_IRQn);
     NVIC_InitStructure.NVIC_IRQChannel = USART2_IRQn;
-    NVIC_InitStructure.NVIC_IRQChannelPreemptionPriority = 0;
-    NVIC_InitStructure.NVIC_IRQChannelSubPriority = 0;
+    NVIC_InitStructure.NVIC_IRQChannelPreemptionPriority = 0; // TODO
+    NVIC_InitStructure.NVIC_IRQChannelSubPriority = 0; // TODO
     NVIC_InitStructure.NVIC_IRQChannelCmd = ENABLE;
     NVIC_Init(&NVIC_InitStructure);
 }
+
 void USART1_IRQHandler(void) {
     uint16_t word;
     if(USART_GetITStatus(USART1,USART_IT_RXNE) != RESET){
         // the most recent received data by the USART1 peripheral
         word = USART_ReceiveData(USART1);
+
         // TODO implement
         USART_SendData(USART2, word);
         
@@ -172,27 +192,33 @@ void USART1_IRQHandler(void) {
 }
 
 void USART2_IRQHandler(void) {
+    uint16_t word;
     if(USART_GetITStatus(USART2, USART_IT_RXNE) != RESET){
-        
         // the most recent received data by the USART1 peripheral
-        Uart3_EnQueue(USART_ReceiveData(USART2)); //<-sensor_data의 데이터 형식 선택 
+        word = USART_ReceiveData(USART2);
+        Uart3_EnQueue(word);
+        // TODO implement
+        USART_SendData(USART1, word);
+        
         // clear 'Read data register not empty' flag
         USART_ClearITPendingBit(USART2, USART_IT_RXNE);
     }
 }
 
+
 void Delay(void) {
     int i;
-    for (i = 0; i < 2000000; i++) {
-        
-    }
+
+    for (i = 0; i < 2000000; i++) {}
 }
 
 int main(void)
 {
+
     SystemInit();
     RCC_Configure();
     GPIO_Configure();
+    USART1_Init();
     USART2_Init();
     NVIC_Configure();
     
@@ -203,5 +229,6 @@ int main(void)
             USART_SendData(USART1, data);
         }
     }
+    while(1);
     return 0;
 }
