@@ -15,16 +15,16 @@ void LED_Init(void);
 // PE2, PE3, PE4를 이용함
 
 void LED_RCC_Configure(void) {
-  RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOD, ENABLE);
+  RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOE, ENABLE);
 }
 
 void LED_GPIO_Configure(void) {
   GPIO_InitTypeDef GPIO_InitStructure;
   // LED Output Mode
-  GPIO_InitStructure.GPIO_Pin = GPIO_Pin_2 | GPIO_Pin_3 | GPIO_Pin_4;
+  GPIO_InitStructure.GPIO_Pin = GPIO_Pin_0 | GPIO_Pin_1 | GPIO_Pin_2;
   GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
   GPIO_InitStructure.GPIO_Mode = GPIO_Mode_Out_PP;
-  GPIO_Init(GPIOD, &GPIO_InitStructure);
+  GPIO_Init(GPIOE, &GPIO_InitStructure);
 }
 
 void LED_Init(void) {
@@ -40,8 +40,8 @@ int main(void)
   LED_GPIO_Configure();
 		 
   //흰색 키기
-  GPIO_SetBits(GPIOD, GPIO_Pin_2); //파랑색 on
-  GPIO_SetBits(GPIOD, GPIO_Pin_3); //초록색 on
-  GPIO_SetBits(GPIOD, GPIO_Pin_4); // 빨간색 on
+  GPIO_SetBits(GPIOE, GPIO_Pin_0); //파랑색 on
+  GPIO_SetBits(GPIOE, GPIO_Pin_1); //초록색 on
+  GPIO_SetBits(GPIOE, GPIO_Pin_2); // 빨간색 on
   return 0;
 }
