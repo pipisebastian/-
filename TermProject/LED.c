@@ -12,7 +12,7 @@ void LED_RCC_Configure(void);
 void LED_GPIO_Configure(void);
 void LED_Init(void);
 
-// PE0, PE1, PE2를 이용함
+// PE0, PE1, PE2를 이용함 gnd nope vcc yes!!
 
 void LED_RCC_Configure(void) {
   RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOE, ENABLE);
@@ -38,8 +38,8 @@ int main(void)
   LED_Init();
 
   //흰색 키기
-  GPIO_SetBits(GPIOE, GPIO_Pin_0); //파랑색 on
+  GPIO_ResetBits(GPIOE, GPIO_Pin_0); //파랑색 on
   GPIO_ResetBits(GPIOE, GPIO_Pin_1); //초록색 on
-  GPIO_SetBits(GPIOE, GPIO_Pin_2); // 빨간색 on
+  GPIO_ResetBits(GPIOE, GPIO_Pin_2); // 빨간색 on
   return 0;
 }
