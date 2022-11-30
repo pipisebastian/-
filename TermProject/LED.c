@@ -12,11 +12,9 @@ void LED_RCC_Configure(void);
 void LED_GPIO_Configure(void);
 void LED_Init(void);
 
-// PE2, PE3, PE4를 이용함
+// PE0, PE1, PE2를 이용함
 
 void LED_RCC_Configure(void) {
-/* Alternate Function IO clock enable */
-  RCC_APB2PeriphClockCmd(RCC_APB2Periph_AFIO, ENABLE);
   RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOE, ENABLE);
 }
 
@@ -37,13 +35,11 @@ void LED_Init(void) {
 int main(void)
 {
   SystemInit();
+  LED_Init();
 
-  LED_RCC_Configure();
-  LED_GPIO_Configure();
-		 
   //흰색 키기
   GPIO_SetBits(GPIOE, GPIO_Pin_0); //파랑색 on
-  GPIO_SetBits(GPIOE, GPIO_Pin_1); //초록색 on
+  GPIO_ResetBits(GPIOE, GPIO_Pin_1); //초록색 on
   GPIO_SetBits(GPIOE, GPIO_Pin_2); // 빨간색 on
   return 0;
 }
