@@ -22,9 +22,11 @@ void RCC_Configure(void) {
 
   // TIM2 clock enable
   RCC_APB1PeriphClockCmd(RCC_APB1Periph_TIM2, ENABLE);
-
   // port E RCC ENABLE
   RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOE, ENABLE);
+
+  /* ADC1 Enable */
+  RCC_APB2PeriphClockCmd(RCC_APB2Periph_ADC1, ENABLE);
 }
 
 void GPIO_Configure(void) {
