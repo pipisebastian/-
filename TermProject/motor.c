@@ -41,8 +41,8 @@ void Start(void)
 {
     GPIO_SetBits(GPIOE, MotorPin[0]);
     GPIO_ResetBits(GPIOE, MotorPin[1]);
-    GPIO_SetBits(GPIOE, MotorPin[2]);
-    GPIO_ResetBits(GPIOE, MotorPin[3]);
+    GPIO_ResetBits(GPIOE, MotorPin[2]);
+    GPIO_SetBits(GPIOE, MotorPin[3]);
 
     // GPIO_WriteBit(GPIOE, MotorPin[0], Bit_SET);
     // GPIO_WriteBit(GPIOE, MotorPin[1], Bit_RESET);
@@ -54,8 +54,8 @@ void Back(void)
 {
     GPIO_ResetBits(GPIOE, MotorPin[0]);
     GPIO_SetBits(GPIOE, MotorPin[1]);
-    GPIO_ResetBits(GPIOE, MotorPin[2]);
-    GPIO_SetBits(GPIOE, MotorPin[3]);
+    GPIO_SetBits(GPIOE, MotorPin[2]);
+    GPIO_ResetBits(GPIOE, MotorPin[3]);
 
     //     GPIO_WriteBit(GPIOE, MotorPin[0], Bit_RESET);
     //     GPIO_WriteBit(GPIOE, MotorPin[1], Bit_SET);
@@ -69,8 +69,8 @@ void TurnLeft(void)
     printf("1");
     GPIO_ResetBits(GPIOE, MotorPin[0]);
     GPIO_SetBits(GPIOE, MotorPin[1]);
-    GPIO_SetBits(GPIOE, MotorPin[2]);
-    GPIO_ResetBits(GPIOE, MotorPin[3]);
+    GPIO_ResetBits(GPIOE, MotorPin[2]);
+    GPIO_SetBits(GPIOE, MotorPin[3]);
     printf("2");
     // GPIO_WriteBit(GPIOE, MotorPin[0], Bit_RESET);
     // GPIO_WriteBit(GPIOE, MotorPin[1], Bit_SET);
@@ -82,8 +82,8 @@ void TurnRight(void)
 {
     GPIO_SetBits(GPIOE, MotorPin[0]);
     GPIO_ResetBits(GPIOE, MotorPin[1]);
-    GPIO_ResetBits(GPIOE, MotorPin[2]);
-    GPIO_SetBits(GPIOE, MotorPin[3]);
+    GPIO_SetBits(GPIOE, MotorPin[2]);
+    GPIO_ResetBits(GPIOE, MotorPin[3]);
     // GPIO_WriteBit(GPIOE, MotorPin[0], Bit_SET);
     // GPIO_WriteBit(GPIOE, MotorPin[1], Bit_RESET);
     // GPIO_WriteBit(GPIOE, MotorPin[2], Bit_RESET);
