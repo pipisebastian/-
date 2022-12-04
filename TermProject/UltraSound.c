@@ -1,3 +1,4 @@
+
 #include "stm32f10x.h"
 #include "stm32f10x_exti.h"
 #include "stm32f10x_gpio.h"
@@ -72,8 +73,9 @@ void TIM_Configure(void) {
 
 void TIM2_IRQHandler(void) {
   tmp++;
-  if(TIM_GetITStatus(TIM2,TIM_IT_Update)!=RESET){
+  if(TIM_GetITStatus(TIM2, TIM_IT_Update) != RESET) {
     usTime++;
+    printf("들어왔당!!\n");
     TIM_ClearITPendingBit(TIM2, TIM_IT_Update);
   }
 }
@@ -99,7 +101,7 @@ int Read_Distance(void){
     }
   }
   printf("usTime : %d, prev : %d\n", usTime, prev);
-  printf("tmp : %d\n", tmp;)
+  printf("tmp : %d\n", tmp);
   //빠져나왔는데
   if(val == SET) { // 5ms안에 SET이 되었으면
     prev = usTime;
