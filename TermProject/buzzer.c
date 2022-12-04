@@ -63,8 +63,8 @@ void TIM3_Configure(void)
 
     /* Time base configuration */
     TIM_TimeBaseInitTypeDef TIM_TimeBaseStructure;
-    TIM_TimeBaseStructure.TIM_Period = 10;          // Overflow Interrupt On 10 usec 타이머주기
-    TIM_TimeBaseStructure.TIM_Prescaler = prescale; // Timer/Count2 Clock = 36Mhz / (35 + 1) = 1Mhz = 1 usec
+    TIM_TimeBaseStructure.TIM_Period = 10;    // Overflow Interrupt On 10 usec 타이머주기
+    TIM_TimeBaseStructure.TIM_Prescaler = 32; // Timer/Count2 Clock = 36Mhz / (35 + 1) = 1Mhz = 1 usec
     TIM_TimeBaseStructure.TIM_ClockDivision = 0;
     TIM_TimeBaseStructure.TIM_CounterMode = TIM_CounterMode_Up; // 카운터모드동작
     TIM_TimeBaseInit(TIM3, &TIM_TimeBaseStructure);
@@ -92,9 +92,12 @@ void TIM3_IRQHandler(void) // 1mS Timer
     }
 }
 
-void delay(void) {
-	  int i;
-	  for (i = 0; i < 1000000; i++) {}
+void delay(void)
+{
+    int i;
+    for (i = 0; i < 1000000; i++)
+    {
+    }
 }
 
 int main(void)
@@ -127,6 +130,56 @@ int main(void)
     delay();
     delay();
 
+    Music = MUSIC_SOL;
+    delay();
+    Music = MUSIC_REST;
+    delay();
+    Music = MUSIC_SOL;
+    delay();
+    Music = MUSIC_MI;
+    delay();
+    Music = MUSIC_REST;
+    delay();
+    Music = MUSIC_MI;
+    delay();
+    Music = MUSIC_RE;
+    delay();
+    delay();
+
+    Music = MUSIC_SOL;
+    delay();
+    Music = MUSIC_REST;
+    delay();
+    Music = MUSIC_SOL;
+    delay();
+    Music = MUSIC_RA;
+    delay();
+    Music = MUSIC_REST;
+    delay();
+    Music = MUSIC_RA;
+    delay();
+    Music = MUSIC_SOL;
+    delay();
+    Music = MUSIC_REST;
+    delay();
+    Music = MUSIC_SOL;
+    delay();
+    Music = MUSIC_MI;
+    delay();
+    delay();
+
+    Music = MUSIC_SOL;
+    delay();
+    Music = MUSIC_MI;
+    delay();
+    Music = MUSIC_RE;
+    delay();
+    Music = MUSIC_MI;
+    delay();
+    Music = MUSIC_DO;
+    delay();
+    delay();
+
     TIM_Cmd(TIM3, DISABLE);
     GPIOB->BRR = GPIO_Pin_0;
-} 
+}
