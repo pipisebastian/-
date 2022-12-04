@@ -136,6 +136,7 @@ int main(void){
   RCC_Configure();
   GPIO_Configure();
   TIM_Configure();
+  NVIC_Configure();
 
   while(1){
     int distance = Read_Distance();
