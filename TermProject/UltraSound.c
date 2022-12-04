@@ -9,6 +9,7 @@
 // PE4 : Trig (송신부 - OUTPUT)
 // PE3 : Echo (수신부 - INPUT)
 uint32_t usTime=0;
+uint32_t tmp=0;
 
 void RCC_Configure(void);
 void GPIO_Configure(void);
@@ -44,21 +45,33 @@ void GPIO_Configure(void) {
 }
 
 void TIM_Configure(void) {
-  uint16_t prescale = (uint16_t)(SystemCoreClock / 10000);
+  // uint16_t prescale = (uint16_t)(SystemCoreClock / 10000);
 
-  TIM_TimeBaseInitTypeDef TIM_TimeBaseStructure;
-  TIM_TimeBaseStructure.TIM_Period = 10000;
-  TIM_TimeBaseStructure.TIM_Prescaler = prescale;
-  TIM_TimeBaseStructure.TIM_ClockDivision = 0;
-  TIM_TimeBaseStructure.TIM_CounterMode = TIM_CounterMode_Down; 
-  TIM_TimeBaseInit(TIM2, &TIM_TimeBaseStructure);
+  // TIM_TimeBaseInitTypeDef TIM_TimeBaseStructure;
+  // TIM_TimeBaseStructure.TIM_Period = 10000;
+  // TIM_TimeBaseStructure.TIM_Prescaler = prescale;
+  // TIM_TimeBaseStructure.TIM_ClockDivision = 0;
+  // TIM_TimeBaseStructure.TIM_CounterMode = TIM_CounterMode_Down; 
+  // TIM_TimeBaseInit(TIM2, &TIM_TimeBaseStructure);
 
-  TIM_ARRPreloadConfig(TIM2, ENABLE);
-  // TIM_ITConfig(TIM2, TIM_IT_Update, ENABLE); 
+  // TIM_ARRPreloadConfig(TIM2, ENABLE);
+  // // TIM_ITConfig(TIM2, TIM_IT_Update, ENABLE); 
+  // TIM_Cmd(TIM2, ENABLE);
+
+  //set 1us
+  TIM_TimeBaseInitTypeDef TIM_InitStructure;
+  TIM_InitStructure.TIM_Prescaler = 72;
+  TIM_InitStructure.TIM_CounterMode = TIM_CounterMode_Up;
+  TIM_InitStructure.TIM_Period = 1;
+  TIM_InitStructure.TIM_ClockDivision = TIM_CKD_DIV1;
+  TIM_TimeBaseInit(TIM2, &TIM_InitStructure);
+  
+  TIM_ITConfig(TIM2, TIM_IT_Update, ENABLE); 
   TIM_Cmd(TIM2, ENABLE);
 }
 
 void TIM2_IRQHandler(void) {
+  tmp++;
   if(TIM_GetITStatus(TIM2,TIM_IT_Update)!=RESET){
     usTime++;
     TIM_ClearITPendingBit(TIM2, TIM_IT_Update);
@@ -86,6 +99,7 @@ int Read_Distance(void){
     }
   }
   printf("usTime : %d, prev : %d\n", usTime, prev);
+  printf("tmp : %d\n", tmp;)
   //빠져나왔는데
   if(val == SET) { // 5ms안에 SET이 되었으면
     prev = usTime;
