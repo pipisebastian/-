@@ -4,6 +4,7 @@
 #include "stm32f10x_gpio.h"
 #include "stm32f10x_usart.h"
 #include "stm32f10x_rcc.h"
+#include "touch.h"
 #include "misc.h"
 #include <stdio.h>
 
@@ -15,6 +16,7 @@ uint32_t tmp=0;
 void RCC_Configure(void);
 void GPIO_Configure(void);
 void TIM_Configure(void);
+void NVIC_Configure(void);
 void TIM2_IRQHandler(void);
 int Read_Distance(void);
 
@@ -69,6 +71,19 @@ void TIM_Configure(void) {
   
   TIM_ITConfig(TIM2, TIM_IT_Update, ENABLE); 
   TIM_Cmd(TIM2, ENABLE);
+}
+
+void NVIC_Configure(void) {
+    
+     NVIC_PriorityGroupConfig(NVIC_PriorityGroup_0);
+     NVIC_InitTypeDef NVIC_InitStructure;
+     /* Enable TIM2 Global Interrupt */
+     NVIC_InitStructure.NVIC_IRQChannel = TIM2_IRQn;
+     NVIC_InitStructure.NVIC_IRQChannelPreemptionPriority = 0;
+     NVIC_InitStructure.NVIC_IRQChannelSubPriority = 0;
+     NVIC_InitStructure.NVIC_IRQChannelCmd = ENABLE;
+     NVIC_Init(&NVIC_InitStructure);
+
 }
 
 void TIM2_IRQHandler(void) {
