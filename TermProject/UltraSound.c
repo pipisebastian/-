@@ -46,29 +46,29 @@ void GPIO_Configure(void) {
 }
 
 void TIM_Configure(void) {
-  // uint16_t prescale = (uint16_t)(SystemCoreClock / 10000);
+  uint16_t prescale = (uint16_t)(SystemCoreClock / 10000);
 
-  // TIM_TimeBaseInitTypeDef TIM_TimeBaseStructure;
-  // TIM_TimeBaseStructure.TIM_Period = 10000;
-  // TIM_TimeBaseStructure.TIM_Prescaler = prescale;
-  // TIM_TimeBaseStructure.TIM_ClockDivision = 0;
-  // TIM_TimeBaseStructure.TIM_CounterMode = TIM_CounterMode_Down; 
-  // TIM_TimeBaseInit(TIM2, &TIM_TimeBaseStructure);
+  TIM_TimeBaseInitTypeDef TIM_TimeBaseStructure;
+  TIM_TimeBaseStructure.TIM_Period = 10000;
+  TIM_TimeBaseStructure.TIM_Prescaler = prescale;
+  TIM_TimeBaseStructure.TIM_ClockDivision = 0;
+  TIM_TimeBaseStructure.TIM_CounterMode = TIM_CounterMode_Down; 
+  TIM_TimeBaseInit(TIM2, &TIM_TimeBaseStructure);
 
-  // TIM_ARRPreloadConfig(TIM2, ENABLE);
-  // // TIM_ITConfig(TIM2, TIM_IT_Update, ENABLE); 
-  // TIM_Cmd(TIM2, ENABLE);
-
-  //set 1us
-  TIM_TimeBaseInitTypeDef TIM_InitStructure;
-  TIM_InitStructure.TIM_Prescaler = 72;
-  TIM_InitStructure.TIM_CounterMode = TIM_CounterMode_Up;
-  TIM_InitStructure.TIM_Period = 1;
-  TIM_InitStructure.TIM_ClockDivision = TIM_CKD_DIV1;
-  TIM_TimeBaseInit(TIM2, &TIM_InitStructure);
-  
-  TIM_ITConfig(TIM2, TIM_IT_Update, ENABLE); 
+  TIM_ARRPreloadConfig(TIM2, ENABLE);
+  // TIM_ITConfig(TIM2, TIM_IT_Update, ENABLE); 
   TIM_Cmd(TIM2, ENABLE);
+
+  // //set 1us
+  // TIM_TimeBaseInitTypeDef TIM_InitStructure;
+  // TIM_InitStructure.TIM_Prescaler = 72;
+  // TIM_InitStructure.TIM_CounterMode = TIM_CounterMode_Up;
+  // TIM_InitStructure.TIM_Period = 1;
+  // TIM_InitStructure.TIM_ClockDivision = TIM_CKD_DIV1;
+  // TIM_TimeBaseInit(TIM2, &TIM_InitStructure);
+  
+  // TIM_ITConfig(TIM2, TIM_IT_Update, ENABLE); 
+  // TIM_Cmd(TIM2, ENABLE);
 }
 
 void NVIC_Configure(void) {
@@ -92,31 +92,19 @@ void TIM2_IRQHandler(void) {
 
 int Read_Distance(void){
   uint32_t prev=0;
-  GPIO_SetBits(GPIOE,GPIO_Pin_4);
   GPIO_ResetBits(GPIOE, GPIO_Pin_3);
   GPIO_ResetBits(GPIOE,GPIO_Pin_4);
   uint8_t val = GPIO_ReadInputDataBit(GPIOE, GPIO_Pin_3);
   prev = usTime;
   //초기값은 ECHO가 RESET일테니까.
-  while(val == RESET){ //바로 SET되지 않고 RESET인 경우에
-    if(usTime - prev >= 10000) break; // 5ms 동안
+  while(val == RESET){
+    while("y")
+    if(usTime - prev >= 10000) break;
     else{
-      val = GPIO_ReadInputDataBit(GPIOE, GPIO_Pin_3); //계속 갱신하면서 5ms가 넘으면 빠져나옴.
+      val = GPIO_ReadInputDataBit(GPIOE, GPIO_Pin_3);
     }
   }
-  return (usTime-prev)*34/1000;
-  // //빠져나왔는데
-  // if(val == SET) { // 5ms안에 SET이 되었으면
-  //   prev = usTime;
-  //   while(GPIO_ReadInputDataBit(GPIOE, GPIO_Pin_3) != RESET)
-  //   {
-  //   }
-  //   return (usTime-prev)*34/1000; // 다시 SET -> RESET이 될때까지 시간 (usTime -prev)으로 distance계산해서 반환.
-  // }else{
-  //     //5ms안에 감지가 안됐으면
-  //     //너무 거리가 멀다는 의미니까 큰값 반환.
-  //     return 150;
-  // }
+  return (usTime-prev);
 }
 
 int main(void){
@@ -128,7 +116,7 @@ int main(void){
 
   while(1){
     int distance = Read_Distance();
-    printf("\t\tdistance : %d\n", distance);
+    printf("\n\tdistance : %d\n", distance);
   }
 
   return 0;
