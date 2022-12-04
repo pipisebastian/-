@@ -106,7 +106,7 @@ int Read_Distance(void){
   prev = usTime;
   //초기값은 ECHO가 RESET일테니까.
   while(val == RESET){ //바로 SET되지 않고 RESET인 경우에
-    if(usTime - prev >= 5000) break; // 5ms 동안
+    if(usTime - prev >= 10000) break; // 5ms 동안
     else{
       val = GPIO_ReadInputDataBit(GPIOE, GPIO_Pin_3); //계속 갱신하면서 5ms가 넘으면 빠져나옴.
     }
@@ -117,15 +117,15 @@ int Read_Distance(void){
     while(GPIO_ReadInputDataBit(GPIOE, GPIO_Pin_3) != RESET)
     {
     }
-    return usTime - prev; // 다시 SET -> RESET이 될때까지 시간 (usTime -prev)으로 distance계산해서 반환.
+    return (usTime - prev) * 34 / 1000; // 다시 SET -> RESET이 될때까지 시간 (usTime -prev)으로 distance계산해서 반환.
   }else{
       //5ms안에 감지가 안됐으면
       //너무 거리가 멀다는 의미니까 큰값 반환.
-      return 10000;
+      return usTime - prev;
   }
 }
 
-int main(void){
+gint main(void){
   SystemInit();
   RCC_Configure();
   GPIO_Configure();
