@@ -19,6 +19,7 @@ void TIM_Configure(void);
 void NVIC_Configure(void);
 void TIM2_IRQHandler(void);
 int Read_Distance(void);
+void Delay(uint32_t);
 
 void RCC_Configure(void) {
   // Alternate Function IO clock enable
@@ -90,21 +91,23 @@ void TIM2_IRQHandler(void) {
   tmp++;
   if(TIM_GetITStatus(TIM2, TIM_IT_Update) != RESET) {
     usTime++;
-    printf("들어왔당!!\n");
     TIM_ClearITPendingBit(TIM2, TIM_IT_Update);
   }
 }
 
-void Delay(void) {
-    int i;
-    for (i = 0; i < 10000; i++) {}
+void Delay(uint32_t delayTime){
+  uint32_t prev_time = usTime;
+  while(1)
+  {
+    if(usTime - prev_time > delayTime) break;
+  }
 }
 
 int Read_Distance(void){
   uint32_t prev=0;
   GPIO_SetBits(GPIOE,GPIO_Pin_4);
   GPIO_ResetBits(GPIOE, GPIO_Pin_3);
-  Delay();
+  Delay(10);
   GPIO_ResetBits(GPIOE,GPIO_Pin_4);
   uint8_t val = GPIO_ReadInputDataBit(GPIOE, GPIO_Pin_3);
   prev = usTime;
