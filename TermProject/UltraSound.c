@@ -140,7 +140,7 @@ int main(void){
 
   while(1){
     int distance = Read_Distance();
-    printf("distance : %d\n", distance);
+    printf("\tdistance : %d\n", distance);
   }
 
   return 0;
