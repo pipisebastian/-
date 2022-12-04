@@ -11,7 +11,6 @@
 // PE4 : Trig (송신부 - OUTPUT)
 // PE3 : Echo (수신부 - INPUT)
 uint32_t usTime=0;
-uint32_t tmp=0;
 
 void RCC_Configure(void);
 void GPIO_Configure(void);
@@ -88,7 +87,6 @@ void NVIC_Configure(void) {
 }
 
 void TIM2_IRQHandler(void) {
-  tmp++;
   if(TIM_GetITStatus(TIM2, TIM_IT_Update) != RESET) {
     usTime++;
     TIM_ClearITPendingBit(TIM2, TIM_IT_Update);
@@ -119,7 +117,6 @@ int Read_Distance(void){
     }
   }
   printf("usTime : %d, prev : %d\n", usTime, prev);
-  printf("tmp : %d\n", tmp);
   //빠져나왔는데
   if(val == SET) { // 5ms안에 SET이 되었으면
     prev = usTime;
