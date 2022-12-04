@@ -11,6 +11,7 @@
 // PE4 : Trig (송신부 - OUTPUT)
 // PE3 : Echo (수신부 - INPUT)
 uint32_t usTime=0;
+uint32_t tmp=0;
 
 void RCC_Configure(void);
 void GPIO_Configure(void);
@@ -18,7 +19,6 @@ void TIM_Configure(void);
 void NVIC_Configure(void);
 void TIM2_IRQHandler(void);
 int Read_Distance(void);
-void Delay(uint32_t);
 
 void RCC_Configure(void) {
   // Alternate Function IO clock enable
@@ -87,25 +87,24 @@ void NVIC_Configure(void) {
 }
 
 void TIM2_IRQHandler(void) {
+  tmp++;
   if(TIM_GetITStatus(TIM2, TIM_IT_Update) != RESET) {
     usTime++;
+    //printf("yes!!\n");
     TIM_ClearITPendingBit(TIM2, TIM_IT_Update);
   }
 }
 
-void Delay(uint32_t delayTime){
-  uint32_t prev_time = usTime;
-  while(1)
-  {
-    if(usTime - prev_time > delayTime) break;
-  }
+void Delay(void) {
+    int i;
+    for (i = 0; i < 500; i++) {}
 }
 
 int Read_Distance(void){
   uint32_t prev=0;
   GPIO_SetBits(GPIOE,GPIO_Pin_4);
   GPIO_ResetBits(GPIOE, GPIO_Pin_3);
-  Delay(10);
+  Delay();
   GPIO_ResetBits(GPIOE,GPIO_Pin_4);
   uint8_t val = GPIO_ReadInputDataBit(GPIOE, GPIO_Pin_3);
   prev = usTime;
@@ -117,6 +116,7 @@ int Read_Distance(void){
     }
   }
   printf("usTime : %d, prev : %d\n", usTime, prev);
+  printf("tmp : %d\n", tmp);
   //빠져나왔는데
   if(val == SET) { // 5ms안에 SET이 되었으면
     prev = usTime;
@@ -140,7 +140,7 @@ int main(void){
 
   while(1){
     int distance = Read_Distance();
-    printf("\tdistance : %d\n", distance);
+    printf("distance : %d\n", distance);
   }
 
   return 0;
