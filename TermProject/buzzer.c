@@ -109,6 +109,23 @@ int main(void)
     delay();
     Music = MUSIC_REST;
     delay();
+    Music = MUSIC_SOL;
+    delay();
+    Music = MUSIC_RA;
+    delay();
+    Music = MUSIC_REST;
+    delay();
+    Music = MUSIC_RA;
+    delay();
+    Music = MUSIC_SOL;
+    delay();
+    Music = MUSIC_REST;
+    delay();
+    Music = MUSIC_SOL;
+    delay();
+    Music = MUSIC_MI;
+    delay();
+    delay();
 
     TIM_Cmd(TIM3, DISABLE);
     GPIOB->BRR = GPIO_Pin_0;
