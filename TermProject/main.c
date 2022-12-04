@@ -12,6 +12,8 @@
 // PE0 : 양 쪽 전조등
 // PE1 : 왼쪽 방향 지시등
 // PE2 : 오른쪽 방향지시등
+// PE3 : ultrasound Echo (수신부 - INPUT)
+// PE4 : ultrasound Trig (송신부 - OUTPUT)
 
 uint16_t u3_rx_buffer[U3_BUFFER_SIZE];
 
@@ -21,6 +23,8 @@ uint16_t data;
 
 int RightLED = 0;
 int LeftLED = 0;
+
+uint32_t usTime=0;
 
 /* function prototype */
 void LED_RCC_Configure(void);
@@ -40,6 +44,14 @@ uint16_t Bluetooth_Uart3_DeQueue(void);
 // void Bluetooth_EXTI_Configure(void);
 // void Bluetooth_EXTI15_10_IRQHandler(void);
 // void Bluetooth_SendDataUART1(uint16_t data);
+
+void UltraSound_RCC_Configure(void);
+void UltraSound_GPIO_Configure(void);
+void UltraSound_TIM_Configure(void);
+void UltraSound_NVIC_Configure(void);
+void TIM2_IRQHandler(void);
+void UltraSound_Init(void);
+int Read_Distance(void);
 
 void Delay(void);
 
@@ -221,6 +233,96 @@ void Bluetooth_Init(void) {
   Bluetooth_NVIC_Configure();
 }
 
+void UltraSound_RCC_Configure(void) {
+  // Alternate Function IO clock enable
+  RCC_APB2PeriphClockCmd(RCC_APB2Periph_AFIO, ENABLE);
+
+  // TIM2 clock enable
+  RCC_APB1PeriphClockCmd(RCC_APB1Periph_TIM2, ENABLE);
+  // port E RCC ENABLE
+  RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOE, ENABLE);
+
+  /* ADC1 Enable */
+  RCC_APB2PeriphClockCmd(RCC_APB2Periph_ADC1, ENABLE);
+}
+
+void UltraSound_GPIO_Configure(void) {
+  // UltraSound
+  GPIO_InitTypeDef GPIO_InitStructure;
+
+  GPIO_InitStructure.GPIO_Pin = GPIO_Pin_4; // PE4 : Trig (송신부 - OUTPUT)
+  GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
+  GPIO_InitStructure.GPIO_Mode = GPIO_Mode_Out_PP;
+  GPIO_Init(GPIOE, &GPIO_InitStructure);
+
+  GPIO_InitStructure.GPIO_Pin = GPIO_Pin_3; // PE3 : Echo (수신부 - INPUT)
+  GPIO_InitStructure.GPIO_Mode = GPIO_Mode_IPD;
+  GPIO_Init(GPIOE, &GPIO_InitStructure);
+}
+
+void UltraSound_TIM_Configure(void) {
+  //set 1us
+  TIM_TimeBaseInitTypeDef TIM_InitStructure;
+  TIM_InitStructure.TIM_Prescaler = 72;
+  TIM_InitStructure.TIM_CounterMode = TIM_CounterMode_Up;
+  TIM_InitStructure.TIM_Period = 1;
+  TIM_InitStructure.TIM_ClockDivision = TIM_CKD_DIV1;
+  TIM_TimeBaseInit(TIM2, &TIM_InitStructure);
+  
+  TIM_ITConfig(TIM2, TIM_IT_Update, ENABLE); 
+  TIM_Cmd(TIM2, ENABLE);
+}
+
+void UltraSound_NVIC_Configure(void) {
+  NVIC_PriorityGroupConfig(NVIC_PriorityGroup_0);
+  NVIC_InitTypeDef NVIC_InitStructure;
+  /* Enable TIM2 Global Interrupt */
+  NVIC_InitStructure.NVIC_IRQChannel = TIM2_IRQn;
+  NVIC_InitStructure.NVIC_IRQChannelPreemptionPriority = 0;
+  NVIC_InitStructure.NVIC_IRQChannelSubPriority = 0;
+  NVIC_InitStructure.NVIC_IRQChannelCmd = ENABLE;
+  NVIC_Init(&NVIC_InitStructure);
+}
+
+void TIM2_IRQHandler(void) {
+  if(TIM_GetITStatus(TIM2, TIM_IT_Update) != RESET) {
+    usTime++;
+    TIM_ClearITPendingBit(TIM2, TIM_IT_Update);
+  }
+}
+
+void UltraSound_Init(void) {
+  UltraSound_RCC_Configure();
+  UltraSound_GPIO_Configure();
+  UltraSound_TIM_Configure();
+  UltraSound_NVIC_Configure();
+}
+
+int Read_Distance(void){
+  uint32_t prev=0;
+  GPIO_SetBits(GPIOE,GPIO_Pin_4);
+  GPIO_ResetBits(GPIOE, GPIO_Pin_3);
+  Delay();
+  GPIO_ResetBits(GPIOE,GPIO_Pin_4);
+  uint8_t val = GPIO_ReadInputDataBit(GPIOE, GPIO_Pin_3);
+  prev = usTime;
+  while(val == RESET){
+    if(usTime - prev >= 10000) break; // 10ms
+    else{
+      val = GPIO_ReadInputDataBit(GPIOE, GPIO_Pin_3);
+    }
+  }
+  if(val == SET) {
+    prev = usTime;
+    while(GPIO_ReadInputDataBit(GPIOE, GPIO_Pin_3) != RESET)
+    {
+    }
+    return (usTime - prev) * 34 / 1000;
+  }else{
+      return 150;
+  }
+}
+
 void USART1_IRQHandler(void) {
   uint16_t word;
   if (USART_GetITStatus(USART1, USART_IT_RXNE) != RESET) {
@@ -258,9 +360,15 @@ int main(void) {
   SystemInit();
   LED_Init();
   Bluetooth_Init();
+  UltraSound_Init();
 
   while (1) {
     LEDTurnOnOff();
+
+    if(Read_Distance() < 15){
+      // TODO 정지!
+    }
+
     if (0 == Bluetooth_Uart3_Is_Empty()) {
       data = Bluetooth_Uart3_DeQueue();
       printf("data: %d \n", data);
