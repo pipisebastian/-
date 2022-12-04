@@ -8,21 +8,6 @@
 #include "lcd.h"
 #include "touch.h"
 
-#define MUSIC_REST 0
-#define MUSIC_DO 191
-#define MUSIC_C_SHARP 180
-#define MUSIC_RE 170
-#define MUSIC_D_SHARP 161
-#define MUSIC_MI 152
-#define MUSIC_PA 143
-#define MUSIC_F_SHARP 135
-#define MUSIC_SOL 128
-#define MUSIC_G_SHARP 120
-#define MUSIC_RA 114
-#define MUSIC_A_SHARP 107
-#define MUSIC_SI 101
-#define MUSIC_HDO 96
-
 uint32_t Sound = 0;
 uint32_t Music = 0;
 
@@ -108,77 +93,30 @@ int main(void)
     TIM3_Configure();
     NVIC_Configure();
 
-    Music = MUSIC_SOL;
-    delay();
-    Music = MUSIC_REST;
-    delay();
-    Music = MUSIC_SOL;
-    delay();
-    Music = MUSIC_RA;
-    delay();
-    Music = MUSIC_REST;
-    delay();
-    Music = MUSIC_RA;
-    delay();
-    Music = MUSIC_SOL;
-    delay();
-    Music = MUSIC_REST;
-    delay();
-    Music = MUSIC_SOL;
-    delay();
-    Music = MUSIC_MI;
-    delay();
-    delay();
+    enum notes
+    {
+        C4 = 261, // 도(261.63Hz)
+        D4 = 293, // 래(293.66Hz)
+        E4 = 329, // 미(329.63Hz)
+        F4 = 349, // 파(349.23Hz)
+        G4 = 392, // 솔(392.00Hz)
+        A4 = 440, // 라(440.00Hz)
+        B4 = 493, // 시(493.88Hz)
+        C5 = 523  // 도(523.25Hz)
+    };
 
-    Music = MUSIC_SOL;
-    delay();
-    Music = MUSIC_REST;
-    delay();
-    Music = MUSIC_SOL;
-    delay();
-    Music = MUSIC_MI;
-    delay();
-    Music = MUSIC_REST;
-    delay();
-    Music = MUSIC_MI;
-    delay();
-    Music = MUSIC_RE;
-    delay();
-    delay();
+    enum notes A[] = {G4, G4, A4, A4, G4, G4, E4, G4, G4, E4, E4, D4,
+                      G4, G4, A4, A4, G4, G4, E4, G4, E4, D4, E4, C4};
 
-    Music = MUSIC_SOL;
-    delay();
-    Music = MUSIC_REST;
-    delay();
-    Music = MUSIC_SOL;
-    delay();
-    Music = MUSIC_RA;
-    delay();
-    Music = MUSIC_REST;
-    delay();
-    Music = MUSIC_RA;
-    delay();
-    Music = MUSIC_SOL;
-    delay();
-    Music = MUSIC_REST;
-    delay();
-    Music = MUSIC_SOL;
-    delay();
-    Music = MUSIC_MI;
-    delay();
-    delay();
-
-    Music = MUSIC_SOL;
-    delay();
-    Music = MUSIC_MI;
-    delay();
-    Music = MUSIC_RE;
-    delay();
-    Music = MUSIC_MI;
-    delay();
-    Music = MUSIC_DO;
-    delay();
-    delay();
+    while (1)
+    {
+        for (int i = 0; i < sizeof(A) / sizeof(enum notes); i++)
+        {
+            Music = A[i];
+            delay();
+            delay();
+        }
+    }
 
     TIM_Cmd(TIM3, DISABLE);
     GPIOB->BRR = GPIO_Pin_0;
