@@ -69,7 +69,7 @@ void TIM3_Configure(void)
     TIM_TimeBaseStructure.TIM_CounterMode = TIM_CounterMode_Up; // 카운터모드동작
     TIM_TimeBaseInit(TIM3, &TIM_TimeBaseStructure);
 
-    /* TIM2 counter enable */
+    /* TIM3 counter enable */
     TIM_Cmd(TIM3, ENABLE);
 
     /* TIM IT(인터럽트) enable */
@@ -78,9 +78,9 @@ void TIM3_Configure(void)
 
 void TIM3_IRQHandler(void) // 1mS Timer
 {
-    if (TIM_GetITStatus(TIM2, TIM_IT_Update) != RESET)
+    if (TIM_GetITStatus(TIM3, TIM_IT_Update) != RESET)
     {
-        TIM_ClearITPendingBit(TIM2, TIM_IT_Update);
+        TIM_ClearITPendingBit(TIM3, TIM_IT_Update);
 
         Sound++;
 
@@ -92,29 +92,9 @@ void TIM3_IRQHandler(void) // 1mS Timer
     }
 }
 
-static void delay(uint32_t nCount)
-{
-    __IO uint16_t i;
-    for (i = 0; i < (nCount * 5); i++)
-    {
-        ;
-    }
-}
-
-void Delay_Us(uint32_t us)
-{
-    if (us > 1)
-    {
-        uint32_t count = us * 8 - 6;
-        while (count--)
-            ;
-    }
-    else
-    {
-        uint32_t count = 2;
-        while (count--)
-            ;
-    }
+void delay(void) {
+	  int i;
+	  for (i = 0; i < 1000000; i++) {}
 }
 
 int main(void)
@@ -126,9 +106,9 @@ int main(void)
     NVIC_Configure();
 
     Music = MUSIC_SOL;
-    delay(0.1);
+    delay();
     Music = MUSIC_REST;
-    delay(0.01);
+    delay();
 
     TIM_Cmd(TIM3, DISABLE);
     GPIOB->BRR = GPIO_Pin_0;
