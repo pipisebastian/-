@@ -30,7 +30,7 @@ void GPIO_Configure(void) {
   GPIO_InitStructure.GPIO_Mode = GPIO_Mode_Out_PP;
   GPIO_Init(GPIOE, &GPIO_InitStructure);
 
-  GPIO_InitStructure.GPIO_Pin = GPIO_Pin_3 // PE3 : Echo (수신부 - INPUT)
+  GPIO_InitStructure.GPIO_Pin = GPIO_Pin_3; // PE3 : Echo (수신부 - INPUT)
   GPIO_InitStructure.GPIO_Mode = GPIO_Mode_IPD;
   GPIO_Init(GPIOE, &GPIO_InitStructure);
 }
@@ -59,15 +59,14 @@ void TIM2_IRQHandler(void) {
 
 void Delay(void) {
     int i;
-
-    for (i = 0; i < 2000000; i++) {}
+    for (i = 0; i < 10000; i++) {}
 }
 
 int Read_Distance(void){
   uint32_t prev=0;
   GPIO_SetBits(GPIOE,GPIO_Pin_4);
   GPIO_ResetBits(GPIOE, GPIO_Pin_3);
-  Delay(10);
+  Delay();
   GPIO_ResetBits(GPIOE,GPIO_Pin_4);
   uint8_t val = GPIO_ReadInputDataBit(GPIOE, GPIO_Pin_3);
   prev = usTime;
@@ -78,6 +77,7 @@ int Read_Distance(void){
       val = GPIO_ReadInputDataBit(GPIOE, GPIO_Pin_3); //계속 갱신하면서 5ms가 넘으면 빠져나옴.
     }
   }
+  printf("usTime : %d, prev : %d\n", usTime, prev);
   //빠져나왔는데
   if(val == SET) { // 5ms안에 SET이 되었으면
     prev = usTime;
@@ -100,7 +100,7 @@ int main(void){
 
   while(1){
     int distance = Read_Distance();
-    printf("%d\n", distance);
+    printf("distance : %d\n", distance);
   }
 
   return 0;
