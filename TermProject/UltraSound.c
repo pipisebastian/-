@@ -3,8 +3,8 @@
 #include "stm32f10x_gpio.h"
 #include "stm32f10x_usart.h"
 #include "stm32f10x_rcc.h"
-#include "touch.h"
 #include "misc.h"
+#include <stdio.h>
 
 // PE4 : Trig (송신부 - OUTPUT)
 // PE3 : Echo (수신부 - INPUT)
@@ -55,6 +55,12 @@ void TIM2_IRQHandler(void) {
     usTime++;
     TIM_ClearITPendingBit(TIM2, TIM_IT_Update);
   }
+}
+
+void Delay(void) {
+    int i;
+
+    for (i = 0; i < 2000000; i++) {}
 }
 
 int Read_Distance(void){
