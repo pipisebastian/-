@@ -90,42 +90,33 @@ void TIM2_IRQHandler(void) {
   }
 }
 
-void Delay(uint32_t delayTime){
-  uint32_t prev_time = usTime;
-  while(1)
-  {
-    if(usTime - prev_time > delayTime) break;
-  }
-}
-
 int Read_Distance(void){
   uint32_t prev=0;
   GPIO_SetBits(GPIOE,GPIO_Pin_4);
   GPIO_ResetBits(GPIOE, GPIO_Pin_3);
-  Delay(10);
   GPIO_ResetBits(GPIOE,GPIO_Pin_4);
   uint8_t val = GPIO_ReadInputDataBit(GPIOE, GPIO_Pin_3);
   prev = usTime;
   //초기값은 ECHO가 RESET일테니까.
   while(val == RESET){ //바로 SET되지 않고 RESET인 경우에
-    if(usTime - prev >= 5000) break; // 5ms 동안
+    if(usTime - prev >= 10000) break; // 5ms 동안
     else{
       val = GPIO_ReadInputDataBit(GPIOE, GPIO_Pin_3); //계속 갱신하면서 5ms가 넘으면 빠져나옴.
     }
   }
-  printf("usTime : %d, prev : %d\n", usTime, prev);
-  //빠져나왔는데
-  if(val == SET) { // 5ms안에 SET이 되었으면
-    prev = usTime;
-    while(GPIO_ReadInputDataBit(GPIOE, GPIO_Pin_3) != RESET)
-    {
-    }
-    return (usTime-prev)*34/1000; // 다시 SET -> RESET이 될때까지 시간 (usTime -prev)으로 distance계산해서 반환.
-  }else{
-      //5ms안에 감지가 안됐으면
-      //너무 거리가 멀다는 의미니까 큰값 반환.
-      return 150;
-  }
+  return (usTime-prev)*34/1000;
+  // //빠져나왔는데
+  // if(val == SET) { // 5ms안에 SET이 되었으면
+  //   prev = usTime;
+  //   while(GPIO_ReadInputDataBit(GPIOE, GPIO_Pin_3) != RESET)
+  //   {
+  //   }
+  //   return (usTime-prev)*34/1000; // 다시 SET -> RESET이 될때까지 시간 (usTime -prev)으로 distance계산해서 반환.
+  // }else{
+  //     //5ms안에 감지가 안됐으면
+  //     //너무 거리가 멀다는 의미니까 큰값 반환.
+  //     return 150;
+  // }
 }
 
 int main(void){
