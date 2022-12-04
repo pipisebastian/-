@@ -81,11 +81,11 @@ void LEDTurnOnOff(void) {
   }
 }
 
-// void Bluetooth_Uart3_EnQueue(uint16_t data)
-// {
-//     u3_rx_buffer[u3_rx_point_head] = data;
-//     Bluetooth_u3_increase_point_value(&u3_rx_point_head);
-// }
+void Bluetooth_Uart3_EnQueue(uint16_t data)
+{
+    u3_rx_buffer[u3_rx_point_head] = data;
+    Bluetooth_u3_increase_point_value(&u3_rx_point_head);
+}
 
 void Bluetooth_u3_increase_point_value(uint32_t *data_p) {
   (*data_p)++;
