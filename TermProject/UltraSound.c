@@ -10,6 +10,12 @@
 // PE3 : Echo (수신부 - INPUT)
 uint32_t usTime=0;
 
+void RCC_Configure(void);
+void GPIO_Configure(void);
+void TIM_Configure(void);
+void TIM2_IRQHandler(void);
+int Read_Distance(void);
+
 void RCC_Configure(void) {
   // Alternate Function IO clock enable
   RCC_APB2PeriphClockCmd(RCC_APB2Periph_AFIO, ENABLE);
@@ -35,7 +41,7 @@ void GPIO_Configure(void) {
   GPIO_Init(GPIOE, &GPIO_InitStructure);
 }
 
-void TIM_Configure() {
+void TIM_Configure(void) {
   uint16_t prescale = (uint16_t)(SystemCoreClock / 10000);
 
   TIM_TimeBaseInitTypeDef TIM_TimeBaseStructure;
