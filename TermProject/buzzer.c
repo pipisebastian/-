@@ -73,7 +73,7 @@ void TIM3_IRQHandler(void) // 1mS Timer
 
         if (Sound >= Music)
         {
-            GPIOB->ODR |= GPIO_Pin_0;
+            GPIOB->ODR ^= GPIO_Pin_0;
             Sound = 0;
         }
     }
