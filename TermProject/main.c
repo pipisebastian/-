@@ -33,7 +33,7 @@ uint16_t u3_rx_buffer[U3_BUFFER_SIZE];
 
 uint32_t u3_rx_point_head = 0;
 uint32_t u3_rx_point_tail = 0;
-uint16_t data;
+uint16_t data = 1000;
 
 int RightLED = 0;
 int LeftLED = 0;
@@ -677,8 +677,12 @@ void Buzzer_playBackMelody(void)
 
     enum notes back[] = {E7, DS7, E7, DS7, E7, B6, D7, C7, A6, A6};
 
-    Music = 100000000 / back[Music_index];
-    Buzzer_daley();
+    for (int i = 0; i < sizeof(back) / sizeof(enum notes); i++)
+    {
+        Music = 100000000 / back[i];
+        buzzer_delay();
+    }
+    Music_index++
 
     Music_index %= 10;
 
@@ -722,7 +726,7 @@ void Buzzer_daley(void)
 {
     int i;
 
-    for (i = 0; i < 10000; i++)
+    for (i = 0; i < 100000; i++)
     {
     }
 }
@@ -748,8 +752,9 @@ int main(void)
             // 정지!
             Motor_Stop();
             Music_index = 0;
-        } else if (0 == Bluetooth_Uart3_Is_Empty()) {
-            data = Bluetooth_Uart3_DeQueue()-'0';
+        } else {
+            if (0 == Bluetooth_Uart3_Is_Empty())
+                data = Bluetooth_Uart3_DeQueue()-'0';
             printf("data: %d \n", data);
             USART_SendData(USART1, data);
 
@@ -788,7 +793,7 @@ int main(void)
             }
             else if (data == 6)
             { // 크락션
-              Buzzer_playBeepMelody();
+                Buzzer_playBeepMelody();
                 Music_index = 0;
             }
             else if(data == 9)
