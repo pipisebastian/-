@@ -582,7 +582,7 @@ void Light_Init(void){
     Light_ADC_Configure();
 }
 
-
+// Buzzer
 
 void Buzzer_RCC_Configure(void)
 {
@@ -648,6 +648,57 @@ void TIM3_IRQHandler(void) // 1mS Timer
             Sound = 0;
         }
     }
+}
+
+void Buzzer_playBackMelody(void)
+{
+    TIM_Cmd(TIM3, ENABLE);
+
+    enum notes
+    {   
+        C6 = 1046502,  // 도
+        D6 = 1174659, // 래
+        DS6 = 1244508, // 레 샾
+        E6 = 1318510, // 미
+        F6 = 1396913, // 파
+        G6 = 1567982, // 솔
+        A6 = 1760000, // 라
+        B6 = 1975533, // 시
+
+        C7 = 2093005,  // 도
+        D7 = 2349318, // 래
+        DS7 = 2489016, // 레 샾
+        E7 = 2637020, // 미
+        F7 = 2793826, // 파
+        G7 = 3135963, // 솔
+        A7 = 3520000, // 라
+        B7 = 3951066, // 시
+    };
+
+    enum notes back[] = {E7, DS7, E7, DS7, E7, B6, D7, C7, A6, A6};
+    
+    for (int i = 0; i < sizeof(back) / sizeof(enum notes); i++)
+    {
+        Music = 100000000 / back[i];
+        delay();
+    }
+
+    TIM_Cmd(TIM3, DISABLE);
+    GPIOB->BRR = GPIO_Pin_0;
+}
+
+void Buzzer_playBeepMelody(void)
+{   
+    TIM_Cmd(TIM3, ENABLE);
+
+    Music = 100000 / 523;
+    delay();
+    delay();
+    Music = 100000 / 523;
+    delay();
+
+    TIM_Cmd(TIM3, DISABLE);
+    GPIOB->BRR = GPIO_Pin_0;
 }
 
 void Buzzer_Init(void)
