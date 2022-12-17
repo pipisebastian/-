@@ -99,49 +99,27 @@ int main(void)
 
     enum notes
     {
-//         C4 = 956, // 도(261.63Hz)
-//         D4 = 851, // 래(293.66Hz)
-//         E4 = 758, // 미(329.63Hz)
-//         F4 = 716, // 파(349.23Hz)
-//         G4 = 638, // 솔(392.00Hz)
-//         A4 = 568, // 라(440.00Hz)
-//         B4 = 506, // 시(493.88Hz)
-//         C5 = 523  // 도(523.25Hz)
-        // C4 = 26163, // 도(261.63Hz)
-        // D4 = 29366, // 래(293.66Hz)
-        // E4 = 32963, // 미(329.63Hz)
-        // F4 = 34923, // 파(349.23Hz)
-        // G4 = 39200, // 솔(392.00Hz)
-        // A4 = 44000, // 라(440.00Hz)
-        // B4 = 49388, // 시(493.88Hz)
-        // C5 = 52325  // 도(523.25Hz)
+        C4 = 956, // 도(261.63Hz)
+        D4 = 851, // 래(293.66Hz)
+        E4 = 758, // 미(329.63Hz)
+        F4 = 716, // 파(349.23Hz)
+        G4 = 638, // 솔(392.00Hz)
+        A4 = 568, // 라(440.00Hz)
+        B4 = 506, // 시(493.88Hz)
+        C5 = 523  // 도(523.25Hz)
     };
 
-    enum notes A[] = {G4, G4, A4, A4, G4, G4, E4, G4, G4, E4, E4, D4,
-                      G4, G4, A4, A4, G4, G4, E4, G4, E4, D4, E4, C4};
+    enum notes A[] = {C4, D4, E4, F4, G4, A4, B4, C5};
 
     while (1)
     {
-        // for (int i = 0; i < sizeof(A) / sizeof(enum notes); i++)
-        // {
-        //     Music = A[i];
-        //     delay();
-        //     delay();
-        // }
-        Music = 2616;
-        delay();
-        delay();
-        delay();
-        Music = 0;
-        delay();
-        delay();
-        Music = 5235;
-        delay();
-        delay();
-        delay();
-        Music = 0;
-        delay();
-        delay();
+        for (int i = 0; i < sizeof(A) / sizeof(enum notes); i++)
+        {
+            Music = A[i];
+            delay();
+            Music = 0;
+            delay();
+        }
     }
 
     TIM_Cmd(TIM3, DISABLE);
