@@ -174,27 +174,16 @@ int main(void)
     enum notes A[] = {G4, G4, A4, A4, G4, G4, E4, G4, G4, E4, E4, D4,
                       G4, G4, A4, A4, G4, G4, E4, G4, E4, D4, E4, C4};
 
-    enum notes back[] = {E5, DS5, E5, DS5, E5, B4, DS5, C5, A4, A4};
-
     enum notes all[] = {C1, D1, DS1, E1, F1, G1, A1, B1, C2, D2, DS2, E2, F2, G2, A2, B2, C3, D3, DS3, E3, F3, G3, A3, B3, C4, D4, DS4, E4, F4, G4, A4, B4, C5, D5, DS5, E5, F5, G5, A5, B5, C6, D6, DS6, E6, F6, G6, A6, B6, C7, D7, DS7, E7, F7, G7, A7, B7, C8, D8, DS8, E8, F8, G8, A8, B8};
-
+    
     enum notes num4[] = {C4, D4, E4, F4, G4, A4, B4};
-
     enum notes num5[] = {C5, D5, E5, F5, G5, A5, B5};
-
     enum notes num6[] = {C6, D6, E6, F6, G6, A6, B6};
-
     enum notes num7[] = {C7, D7, E7, F7, G7, A7, B7};
-
     enum notes num8[] = {C8, D8, E8, F8, G8, A8, B8};
 
-    enum notes back1[] = {E5, DS5, E5, DS5, E5, B4, DS5, C5, A4, A4};
-
-    enum notes back2[] = {E6, DS6, E6, DS6, E6, B5, DS6, C6, A5, A5};
-
-    enum notes back3[] = {E7, DS7, E7, DS7, E7, B6, DS7, C7, A6, A6};
-
-    enum notes back4[] = {E8, DS8, E8, DS8, E8, B7, DS8, C8, A7, A7};
+    enum notes back1[] = {E6, DS6, E6, DS6, E6, B5, D6, C6, A5, A5};
+    enum notes back2[] = {E7, DS7, E7, DS7, E7, B6, D7, C7, A6, A6};
 
 
     while (1)
@@ -204,7 +193,7 @@ int main(void)
 
         for (int i = 0; i < sizeof(back1) / sizeof(enum notes); i++)
         {
-            Music = back1[i];
+            Music = 100000/back1[i];
             delay();
         }
         Music = 0;
@@ -213,25 +202,7 @@ int main(void)
 
         for (int i = 0; i < sizeof(back2) / sizeof(enum notes); i++)
         {
-            Music = back2[i];
-            delay();
-        }
-        Music = 0;
-        delay();
-        delay();
-
-        for (int i = 0; i < sizeof(back3) / sizeof(enum notes); i++)
-        {
-            Music = back3[i];
-            delay();
-        }
-        Music = 0;
-        delay();
-        delay();
-
-        for (int i = 0; i < sizeof(back4) / sizeof(enum notes); i++)
-        {
-            Music = back4[i];
+            Music = 100000/back2[i];
             delay();
         }
         Music = 0;
