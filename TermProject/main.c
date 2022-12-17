@@ -401,7 +401,7 @@ void USART2_IRQHandler(void)
     {
         // the most recent received data by the USART1 peripheral
         word = USART_ReceiveData(USART2);
-        Uart3_EnQueue(word);
+        Bluetooth_Uart3_EnQueue(word);
         USART_SendData(USART1, word);
 
         // clear 'Read data register not empty' flag
