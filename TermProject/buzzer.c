@@ -8,8 +8,6 @@
 #include "lcd.h"
 #include "touch.h"
 
-// buzzer : B0
-
 uint32_t Sound = 0;
 uint32_t Music = 0;
 
@@ -39,7 +37,7 @@ void NVIC_Configure(void)
     /* Enable the TIM3 gloabal Interrupt */
     NVIC_InitStructure.NVIC_IRQChannel = TIM3_IRQn;
     NVIC_InitStructure.NVIC_IRQChannelPreemptionPriority = 0;
-    NVIC_InitStructure.NVIC_IRQChannelSubPriority = 0;
+    NVIC_InitStructure.NVIC_IRQChannelSubPriority = 1;
     NVIC_InitStructure.NVIC_IRQChannelCmd = ENABLE;
     NVIC_Init(&NVIC_InitStructure);
 }
@@ -50,12 +48,10 @@ void TIM3_Configure(void)
 
     /* Time base configuration */
     TIM_TimeBaseInitTypeDef TIM_TimeBaseStructure;
-    // TIM_TimeBaseStructure.TIM_Period = 10;    // Overflow Interrupt On 10 usec 타이머주기
-    // TIM_TimeBaseStructure.TIM_Prescaler = 32; // Timer/Count2 Clock = 36Mhz / (35 + 1) = 1Mhz = 1 usec
-    TIM_TimeBaseStructure.TIM_Period = 10000;
-    TIM_TimeBaseStructure.TIM_Prescaler = prescale;
+    TIM_TimeBaseStructure.TIM_Period = 10;    // Overflow Interrupt On 10 usec 타이머주기
+    TIM_TimeBaseStructure.TIM_Prescaler = 32; // Timer/Count2 Clock = 36Mhz / (35 + 1) = 1Mhz = 1 usec
     TIM_TimeBaseStructure.TIM_ClockDivision = 0;
-    TIM_TimeBaseStructure.TIM_CounterMode = TIM_CounterMode_Down; // 카운터모드동작
+    TIM_TimeBaseStructure.TIM_CounterMode = TIM_CounterMode_Up; // 카운터모드동작
     TIM_TimeBaseInit(TIM3, &TIM_TimeBaseStructure);
 
     /* TIM3 counter enable */
@@ -99,17 +95,18 @@ int main(void)
 
     enum notes
     {
-        C4 = 956, // 도(261.63Hz)
-        D4 = 851, // 래(293.66Hz)
-        E4 = 758, // 미(329.63Hz)
-        F4 = 716, // 파(349.23Hz)
-        G4 = 638, // 솔(392.00Hz)
-        A4 = 568, // 라(440.00Hz)
-        B4 = 506, // 시(493.88Hz)
+        C4 = 261, // 도(261.63Hz)
+        D4 = 293, // 래(293.66Hz)
+        E4 = 329, // 미(329.63Hz)
+        F4 = 349, // 파(349.23Hz)
+        G4 = 392, // 솔(392.00Hz)
+        A4 = 440, // 라(440.00Hz)
+        B4 = 493, // 시(493.88Hz)
         C5 = 523  // 도(523.25Hz)
     };
 
-    enum notes A[] = {C4, D4, E4, F4, G4, A4, B4, C5};
+    enum notes A[] = {G4, G4, A4, A4, G4, G4, E4, G4, G4, E4, E4, D4,
+                      G4, G4, A4, A4, G4, G4, E4, G4, E4, D4, E4, C4};
 
     while (1)
     {
@@ -117,7 +114,6 @@ int main(void)
         {
             Music = A[i];
             delay();
-            Music = 0;
             delay();
         }
     }
