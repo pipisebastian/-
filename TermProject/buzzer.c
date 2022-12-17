@@ -104,26 +104,28 @@ int main(void)
         G4 = 392, // 솔(392.00Hz)
         A4 = 440, // 라(440.00Hz)
         B4 = 493, // 시(493.88Hz)
-        C5 = 523  // 도(523.25Hz)
-
-//         C4 = 956, // 도(261.63Hz)
-//         D4 = 851, // 래(293.66Hz)
-//         E4 = 758, // 미(329.63Hz)
-//         F4 = 716, // 파(349.23Hz)
-//         G4 = 638, // 솔(392.00Hz)
-//         A4 = 568, // 라(440.00Hz)
-//         B4 = 506, // 시(493.88Hz)
-//         C5 = 523  // 도(523.25Hz)
+        C5 = 523,  // 도(523.25Hz)
+        D5 = 587, // 래
+        DS5 = 622, // 레 샾
+        E5 = 659, // 미
+        F5 = 698, // 파
+        G5 = 784, // 솔
+        A5 = 880, // 라
+        B5 = 988, // 시
+        
     };
 
     enum notes A[] = {G4, G4, A4, A4, G4, G4, E4, G4, G4, E4, E4, D4,
                       G4, G4, A4, A4, G4, G4, E4, G4, E4, D4, E4, C4};
 
+    enum notes back[] = {E5, DS5, E5, DS5, E5, B4, DS5 C5, A4, A4};
+
     while (1)
     {
-        for (int i = 0; i < sizeof(A) / sizeof(enum notes); i++)
+        for (int i = 0; i < sizeof(back) / sizeof(enum notes); i++)
         {
-            Music = A[i];
+            Music = back[i];
+            delay();
             delay();
         }
     }
