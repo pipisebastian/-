@@ -105,14 +105,14 @@ int main(void)
 //         A4 = 568, // 라(440.00Hz)
 //         B4 = 506, // 시(493.88Hz)
 //         C5 = 523  // 도(523.25Hz)
-        C4 = 2616, // 도(261.63Hz)
-        D4 = 2936, // 래(293.66Hz)
-        E4 = 3296, // 미(329.63Hz)
-        F4 = 3492, // 파(349.23Hz)
-        G4 = 3920, // 솔(392.00Hz)
-        A4 = 4400, // 라(440.00Hz)
-        B4 = 4938, // 시(493.88Hz)
-        C5 = 5232  // 도(523.25Hz)
+        C4 = 26163, // 도(261.63Hz)
+        D4 = 29366, // 래(293.66Hz)
+        E4 = 32963, // 미(329.63Hz)
+        F4 = 34923, // 파(349.23Hz)
+        G4 = 39200, // 솔(392.00Hz)
+        A4 = 44000, // 라(440.00Hz)
+        B4 = 49388, // 시(493.88Hz)
+        C5 = 52325  // 도(523.25Hz)
     };
 
     enum notes A[] = {G4, G4, A4, A4, G4, G4, E4, G4, G4, E4, E4, D4,
@@ -120,12 +120,17 @@ int main(void)
 
     while (1)
     {
-        for (int i = 0; i < sizeof(A) / sizeof(enum notes); i++)
-        {
-            Music = A[i];
-            delay();
-            delay();
-        }
+        // for (int i = 0; i < sizeof(A) / sizeof(enum notes); i++)
+        // {
+        //     Music = A[i];
+        //     delay();
+        //     delay();
+        // }
+        Music = C4;
+        delay();
+        delay();
+        delay();
+        Music = C5;
     }
 
     TIM_Cmd(TIM3, DISABLE);
