@@ -680,7 +680,7 @@ void Buzzer_playBackMelody(void)
     for (int i = 0; i < sizeof(back) / sizeof(enum notes); i++)
     {
         Music = 100000000 / back[i];
-        delay();
+        Delay();
     }
 
     TIM_Cmd(TIM3, DISABLE);
@@ -692,10 +692,10 @@ void Buzzer_playBeepMelody(void)
     TIM_Cmd(TIM3, ENABLE);
 
     Music = 100000 / 523;
-    delay();
-    delay();
+    Delay();
+    Delay();
     Music = 100000 / 523;
-    delay();
+    Delay();
 
     TIM_Cmd(TIM3, DISABLE);
     GPIOB->BRR = GPIO_Pin_0;
