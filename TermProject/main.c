@@ -444,19 +444,11 @@ void Motor_Start(void)
 {
     GPIO_SetBits(GPIOE, Motor_Pin[0]);
     GPIO_ResetBits(GPIOE, Motor_Pin[1]);
-    GPIO_ResetBits(GPIOE, Motor_Pin[3]);
     GPIO_SetBits(GPIOE, Motor_Pin[2]);
+    GPIO_ResetBits(GPIOE, Motor_Pin[3]);
 }
 
 void Motor_Back(void)
-{
-    GPIO_ResetBits(GPIOE, Motor_Pin[0]);
-    GPIO_SetBits(GPIOE, Motor_Pin[1]);
-    GPIO_SetBits(GPIOE, Motor_Pin[2]);
-    GPIO_ResetBits(GPIOE, Motor_Pin[3]);
-}
-
-void Motor_TurnLeft(void)
 {
     GPIO_ResetBits(GPIOE, Motor_Pin[0]);
     GPIO_SetBits(GPIOE, Motor_Pin[1]);
@@ -464,12 +456,20 @@ void Motor_TurnLeft(void)
     GPIO_SetBits(GPIOE, Motor_Pin[3]);
 }
 
+void Motor_TurnLeft(void)
+{
+    GPIO_ResetBits(GPIOE, Motor_Pin[0]);
+    GPIO_SetBits(GPIOE, Motor_Pin[1]);
+    GPIO_SetBits(GPIOE, Motor_Pin[2]);
+    GPIO_ResetBits(GPIOE, Motor_Pin[3]);
+}
+
 void Motor_TurnRight(void)
 {
     GPIO_SetBits(GPIOE, Motor_Pin[0]);
     GPIO_ResetBits(GPIOE, Motor_Pin[1]);
-    GPIO_SetBits(GPIOE, Motor_Pin[2]);
-    GPIO_ResetBits(GPIOE, Motor_Pin[3]);
+    GPIO_ResetBits(GPIOE, Motor_Pin[2]);
+    GPIO_SetBits(GPIOE, Motor_Pin[3]);
 }
 
 void Motor_Stop(void)
