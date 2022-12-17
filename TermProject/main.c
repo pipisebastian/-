@@ -628,7 +628,7 @@ void Buzzer_TIM3_Configure(void)
     TIM_TimeBaseInit(TIM3, &TIM_TimeBaseStructure);
 
     /* TIM3 counter enable */
-    TIM_Cmd(TIM3, ENABLE);
+    TIM_Cmd(TIM3, DISABLE);
 
     /* TIM IT(인터럽트) enable */
     TIM_ITConfig(TIM3, TIM_IT_Update, ENABLE);
