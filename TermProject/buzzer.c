@@ -128,11 +128,10 @@ void playBeepMelody(void)
 {   
     TIM_Cmd(TIM3, ENABLE);
 
-    Music = 100000000 / 1318510;
+    Music = 100000 / 523;
     delay();
-    Music = 0;
     delay();
-    Music = 100000000 / 1318510;
+    Music = 100000 / 523;
     delay();
 
     TIM_Cmd(TIM3, DISABLE);
