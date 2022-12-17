@@ -5,8 +5,12 @@
 #include "stm32f10x_rcc.h"
 #include "stm32f10x_usart.h"
 #include "stm32f10x_adc.h"
+#include "stm32f10x_tim.h"
 #include "lcd.h"
 #include "touch.h"
+
+#define CPU_FREQ	72000000
+#define PRESCALER 	72
 
 // buzzer : B0
 
@@ -26,8 +30,8 @@ void GPIO_Configure(void)
     /* BUZZER */
     GPIO_InitTypeDef GPIO_InitStructure;
     GPIO_InitStructure.GPIO_Pin = GPIO_Pin_0;
-    GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
-    GPIO_InitStructure.GPIO_Mode = GPIO_Mode_Out_PP;
+    GPIO_InitStructure.GPIO_Speed = GPIO_Speed_2MHz;
+    GPIO_InitStructure.GPIO_Mode = GPIO_Mode_AF_PP;
     GPIO_Init(GPIOB, &GPIO_InitStructure);
 }
 
@@ -65,21 +69,21 @@ void TIM3_Configure(void)
     TIM_ITConfig(TIM3, TIM_IT_Update, ENABLE);
 }
 
-void TIM3_IRQHandler(void) // 1mS Timer
-{
-    if (TIM_GetITStatus(TIM3, TIM_IT_Update) != RESET)
-    {
-        TIM_ClearITPendingBit(TIM3, TIM_IT_Update);
+// void TIM3_IRQHandler(void) // 1mS Timer
+// {
+//     if (TIM_GetITStatus(TIM3, TIM_IT_Update) != RESET)
+//     {
+//         TIM_ClearITPendingBit(TIM3, TIM_IT_Update);
 
-        Sound++;
+//         Sound++;
 
-        if (Sound >= Music)
-        {
-            GPIOB->ODR ^= GPIO_Pin_0;
-            Sound = 0;
-        }
-    }
-}
+//         if (Sound >= Music)
+//         {
+//             GPIOB->ODR ^= GPIO_Pin_0;
+//             Sound = 0;
+//         }
+//     }
+// }
 
 void delay(void)
 {
@@ -87,6 +91,17 @@ void delay(void)
     for (i = 0; i < 1000000; i++)
     {
     }
+}
+
+void buzzerSetNewFrequency(unit32_t newFreq){
+  uint64_t tempFreq = newFreq;
+	if(newFreq == 0) tempFreq = 1;
+
+	uint64_t tempNewValue = (uint64_t) CPU_FREQ / PRESCALER / tempFreq;
+
+	// setting new value
+	TIM3->ARR = (uint32_t)tempNewValue;
+	TIM3-> CCR4 = (uint32_t)tempNewValue/2;
 }
 
 int main(void)
@@ -117,8 +132,8 @@ int main(void)
         // C5 = 52325  // 도(523.25Hz)
     };
 
-    enum notes A[] = {G4, G4, A4, A4, G4, G4, E4, G4, G4, E4, E4, D4,
-                      G4, G4, A4, A4, G4, G4, E4, G4, E4, D4, E4, C4};
+    // enum notes A[] = {G4, G4, A4, A4, G4, G4, E4, G4, G4, E4, E4, D4,
+    //                   G4, G4, A4, A4, G4, G4, E4, G4, E4, D4, E4, C4};
 
     while (1)
     {
@@ -128,19 +143,13 @@ int main(void)
         //     delay();
         //     delay();
         // }
-        Music = 2616;
+        buzzerSetNewFrequency(2616);
         delay();
+        buzzerSetNewFrequency(0);
         delay();
+        buzzerSetNewFrequency(5232);
         delay();
-        Music = 0;
-        delay();
-        delay();
-        Music = 5235;
-        delay();
-        delay();
-        delay();
-        Music = 0;
-        delay();
+        buzzerSetNewFrequency(0);
         delay();
     }
 
