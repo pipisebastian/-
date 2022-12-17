@@ -8,6 +8,8 @@
 #include "lcd.h"
 #include "touch.h"
 
+// buzzer : B0
+
 uint32_t Sound = 0;
 uint32_t Music = 0;
 
