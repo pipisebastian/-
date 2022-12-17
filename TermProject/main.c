@@ -3,6 +3,8 @@
 #include "stm32f10x_gpio.h"
 #include "stm32f10x_usart.h"
 #include "stm32f10x_rcc.h"
+#include "stm32f10x_adc.h"
+#include "core_cm3.h"
 #include "touch.h"
 #include "misc.h"
 #include "stdio.h"
@@ -10,9 +12,15 @@
 #define U3_BUFFER_SIZE 100
 
 // 사용하는 포트 정리
+// Buzzer
+// PB0 : Buzzer
+// 조도센서
+// PC0  : 조도센서 ADC
+// LED
 // PE0 : 양 쪽 전조등
 // PE1 : 왼쪽 방향 지시등
 // PE2 : 오른쪽 방향지시등
+// Bluetooth
 // PE3 : ultrasound Echo (수신부 - INPUT)
 // PE4 : ultrasound Trig (송신부 - OUTPUT)
 // 모터
@@ -20,8 +28,6 @@
 // PE11 : 오른쪽 앞바퀴
 // PE12 : 왼쪽 뒷바퀴
 // PE13 : 오른쪽 바퀴
-// 조도센서
-// PC0  : 조도센서 ADC
 
 uint16_t u3_rx_buffer[U3_BUFFER_SIZE];
 
@@ -33,6 +39,9 @@ int RightLED = 0;
 int LeftLED = 0;
 
 uint32_t usTime = 0;
+
+uint32_t Sound = 0;
+uint32_t Music = 0;
 
 //조도센서 전역변수
 uint16_t ADC1_CONVERTED_VALUE;
@@ -84,7 +93,15 @@ void Light_NVIC_Configure(void);
 void Light_ADC_Configure(void);
 void Light_Init(void);
 
-
+// buzzer
+void Buzzer_RCC_Configure(void);
+void Buzzer_GPIO_Configure(void);
+void Buzzer_NVIC_Configure(void);
+void Buzzer_TIM3_Configure(void);
+void Buzzer_playBackMelody(void);
+void Buzzer_playBeepMelody(void);
+void Buzzer_Init(void);
+void TIM3_IRQHandler(void);
 
 //딜레이
 void Delay(void);
@@ -566,11 +583,87 @@ void Light_Init(void){
 }
 
 
+
+void Buzzer_RCC_Configure(void)
+{
+    /* PWM */
+    RCC_APB1PeriphClockCmd(RCC_APB1Periph_TIM3, ENABLE); // TIM3
+    /* BUZZER */
+    RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOB, ENABLE); // PB0
+}
+
+void Buzzer_GPIO_Configure(void)
+{
+    /* BUZZER */
+    GPIO_InitTypeDef GPIO_InitStructure;
+    GPIO_InitStructure.GPIO_Pin = GPIO_Pin_0;
+    GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
+    GPIO_InitStructure.GPIO_Mode = GPIO_Mode_Out_PP;
+    GPIO_Init(GPIOB, &GPIO_InitStructure);
+}
+
+void Buzzer_NVIC_Configure(void)
+{
+    NVIC_PriorityGroupConfig(NVIC_PriorityGroup_0);
+    NVIC_InitTypeDef NVIC_InitStructure;
+
+    /* Enable the TIM3 gloabal Interrupt */
+    NVIC_InitStructure.NVIC_IRQChannel = TIM3_IRQn;
+    NVIC_InitStructure.NVIC_IRQChannelPreemptionPriority = 0;
+    NVIC_InitStructure.NVIC_IRQChannelSubPriority = 1;
+    NVIC_InitStructure.NVIC_IRQChannelCmd = ENABLE;
+    NVIC_Init(&NVIC_InitStructure);
+}
+
+void Buzzer_TIM3_Configure(void)
+{
+    uint16_t prescale = (uint16_t)(SystemCoreClock / 10);
+
+    /* Time base configuration */
+    TIM_TimeBaseInitTypeDef TIM_TimeBaseStructure;
+    TIM_TimeBaseStructure.TIM_Period = 10;    // Overflow Interrupt On 10 msec 타이머주기
+    TIM_TimeBaseStructure.TIM_Prescaler = 36; // Timer/Count2 Clock = 36Mhz / (35 + 1) = 1Mhz = 1 usec
+    TIM_TimeBaseStructure.TIM_ClockDivision = 0;
+    TIM_TimeBaseStructure.TIM_CounterMode = TIM_CounterMode_Up; // 카운터모드동작
+    TIM_TimeBaseInit(TIM3, &TIM_TimeBaseStructure);
+
+    /* TIM3 counter enable */
+    TIM_Cmd(TIM3, ENABLE);
+
+    /* TIM IT(인터럽트) enable */
+    TIM_ITConfig(TIM3, TIM_IT_Update, ENABLE);
+}
+
+void TIM3_IRQHandler(void) // 1mS Timer
+{
+    if (TIM_GetITStatus(TIM3, TIM_IT_Update) != RESET)
+    {
+        TIM_ClearITPendingBit(TIM3, TIM_IT_Update);
+
+        Sound++;
+
+        if (Sound >= Music)
+        {
+            GPIOB->ODR ^= GPIO_Pin_0;
+            Sound = 0;
+        }
+    }
+}
+
+void Buzzer_Init(void)
+{
+    Buzzer_RCC_Configure();
+    Buzzer_GPIO_Configure();
+    Buzzer_NVIC_Configure();
+    Buzzer_TIM3_Configure();
+}
+
+
 void Delay(void)
 {
     int i;
 
-    for (i = 0; i < 2000000; i++)
+    for (i = 0; i < 1000000; i++)
     {
     }
 }
@@ -584,37 +677,34 @@ int main(void)
     UltraSound_Init();
     Motor_Init(); //모터
     Light_Init(); //조도센서
+    Buzzer_Init(); // Buzzer
 
     while (1)
     {
-        LEDTurnOnOff();
 
-        /*if (Read_Distance() < 15)
-        {
-            // TODO 정지!
+        if (Read_Distance() < 15) {
+            // 정지!
             Motor_Stop();
-        }
-
-        if (0 == Bluetooth_Uart3_Is_Empty())
-        {
+        } else if (0 == Bluetooth_Uart3_Is_Empty()) {
             data = Bluetooth_Uart3_DeQueue();
             printf("data: %d \n", data);
             USART_SendData(USART1, data);
 
             if (data == 0)
-            { // TODO 후진
+            { // 후진
                 Motor_Back();
+                Buzzer_playBackMelody();
             }
             else if (data == 1)
-            { // TODO 전진
+            { // 전진
                 Motor_Start();
             }
             else if (data == 2)
-            { // TODO 좌회전
+            { // 좌회전
                 Motor_TurnLeft();
             }
             else if (data == 3)
-            { // TODO 우회전
+            { // 우회전
                 Motor_TurnRight();
             }
             else if (data == 4)
@@ -628,9 +718,10 @@ int main(void)
                 RightLED %= 2;
             }
             else if (data == 6)
-            { // TODO 크락션
+            { // 크락션
+              Buzzer_playBeepMelody();
             }
-        }*/
+        }
     }
     return 0;
 }
