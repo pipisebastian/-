@@ -42,7 +42,7 @@ uint32_t usTime = 0;
 
 uint32_t Sound = 0;
 uint32_t Music = 0;
-unit32_t Music_index=0;
+uint32_t Music_index=0;
 
 //조도센서 전역변수
 uint16_t ADC1_CONVERTED_VALUE;
@@ -134,12 +134,10 @@ void LEDTurnOnOff(void)
     if (ADC1_CONVERTED_VALUE < 2200)
     {
         GPIO_SetBits(GPIOE, GPIO_Pin_0); // 전조등 끄기
-        printf(" 00 %u\n", ADC1_CONVERTED_VALUE);
     }
     else
     {
         GPIO_ResetBits(GPIOE, GPIO_Pin_0); // 전조등 켜기
-        printf(" 11 %u\n", ADC1_CONVERTED_VALUE);
     }
 
     if (LeftLED % 2 == 0)
@@ -745,13 +743,13 @@ int main(void)
 
     while (1)
     {
-
+        LEDTurnOnOff();
         if (Read_Distance() < 15) {
             // 정지!
             Motor_Stop();
             Music_index = 0;
         } else if (0 == Bluetooth_Uart3_Is_Empty()) {
-            data = Bluetooth_Uart3_DeQueue();
+            data = Bluetooth_Uart3_DeQueue()-'0';
             printf("data: %d \n", data);
             USART_SendData(USART1, data);
 
