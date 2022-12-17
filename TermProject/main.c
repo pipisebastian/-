@@ -588,7 +588,7 @@ int main(void)
     while (1)
     {
         LEDTurnOnOff();
-        Motor_Start();
+        Motor_Back();
 
         /*if (Read_Distance() < 15)
         {
