@@ -14,8 +14,14 @@
 // PE2 : 오른쪽 방향지시등
 // PE3 : ultrasound Echo (수신부 - INPUT)
 // PE4 : ultrasound Trig (송신부 - OUTPUT)
+// 모터
+// PE10 : 왼쪽 앞바퀴
+// PE11 : 오른쪽 앞바퀴
+// PE12 : 왼쪽 뒷바퀴
+// PE13 : 오른쪽 바퀴
 
 uint16_t u3_rx_buffer[U3_BUFFER_SIZE];
+
 
 uint32_t u3_rx_point_head = 0;
 uint32_t u3_rx_point_tail = 0;
@@ -25,6 +31,9 @@ int RightLED = 0;
 int LeftLED = 0;
 
 uint32_t usTime=0;
+
+//모터 전역변수
+int16_t Motor_Pin[4] = {GPIO_Pin_10, GPIO_Pin_11, GPIO_Pin_12, GPIO_Pin_13};
 
 /* function prototype */
 void LED_RCC_Configure(void);
@@ -53,6 +62,17 @@ void TIM2_IRQHandler(void);
 void UltraSound_Init(void);
 int Read_Distance(void);
 
+//모터
+void Motor_RCC_Configure(void);
+void Motor_GPIO_Configure(void);
+void Motor_Start(void);
+void Motor_Back(void);
+void Motor_TurnLeft(void);
+void Motor_TurnRight(void);
+void Motor_Stop(void);
+void Motor_Init(void);
+
+//딜레이
 void Delay(void);
 
 void LED_RCC_Configure(void) {
@@ -348,6 +368,72 @@ void USART2_IRQHandler(void) {
   }
 }
 
+//모터
+void Motor_RCC_Configure(void)
+{
+    RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOE, ENABLE);
+}
+
+void Motor_GPIO_Configure(void) //
+{
+    GPIO_InitTypeDef GPIO_InitStructure;
+    GPIO_InitStructure.GPIO_Pin = GPIO_Pin_10 | GPIO_Pin_11 | GPIO_Pin_12 | GPIO_Pin_12;
+    GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
+    GPIO_InitStructure.GPIO_Mode = GPIO_Mode_Out_PP;
+    GPIO_Init(GPIOE, &GPIO_InitStructure);
+}
+void Motor_Start(void)
+{
+    GPIO_SetBits(GPIOE, MotorPin[0]);
+    GPIO_ResetBits(GPIOE, MotorPin[1]);
+    GPIO_ResetBits(GPIOE, MotorPin[2]);
+    GPIO_SetBits(GPIOE, MotorPin[3]);
+}
+
+void Motor_Back(void)
+{
+    GPIO_ResetBits(GPIOE, MotorPin[0]);
+    GPIO_SetBits(GPIOE, MotorPin[1]);
+    GPIO_SetBits(GPIOE, MotorPin[2]);
+    GPIO_ResetBits(GPIOE, MotorPin[3]);
+}
+
+void Motor_TurnLeft(void)
+{
+    GPIO_ResetBits(GPIOE, MotorPin[0]);
+    GPIO_SetBits(GPIOE, MotorPin[1]);
+    GPIO_ResetBits(GPIOE, MotorPin[2]);
+    GPIO_SetBits(GPIOE, MotorPin[3]);
+}
+
+void Motor_TurnRight(void)
+{
+    GPIO_SetBits(GPIOE, MotorPin[0]);
+    GPIO_ResetBits(GPIOE, MotorPin[1]);
+    GPIO_SetBits(GPIOE, MotorPin[2]);
+    GPIO_ResetBits(GPIOE, MotorPin[3]);
+}
+
+void Motor_Stop(void)
+{
+    GPIO_ResetBits(GPIOE, MotorPin[0]);
+    GPIO_ResetBits(GPIOE, MotorPin[1]);
+    GPIO_ResetBits(GPIOE, MotorPin[2]);
+    GPIO_ResetBits(GPIOE, MotorPin[3]);
+}
+
+void Motor_Init(void)
+{
+    Motor_RCC_Configure();
+    Motor_GPIO_Configure();
+
+    Motor_Start();
+    Motor_Back();
+    Motor_TurnLeft();
+    Motor_TurnRight();
+    Motor_Stop();
+}
+
 void Delay(void) {
   int i;
 
@@ -361,6 +447,7 @@ int main(void) {
   LED_Init();
   Bluetooth_Init();
   UltraSound_Init();
+  Motor_Init();//모터
 
   while (1) {
     LEDTurnOnOff();
