@@ -5,6 +5,7 @@
 #include "stm32f10x_rcc.h"
 #include "touch.h"
 #include "misc.h"
+#include "stdio.h"
 
 #define U3_BUFFER_SIZE 100
 
@@ -19,6 +20,8 @@
 // PE11 : 오른쪽 앞바퀴
 // PE12 : 왼쪽 뒷바퀴
 // PE13 : 오른쪽 바퀴
+// 조도센서
+// PC0  : 조도센서 ADC
 
 uint16_t u3_rx_buffer[U3_BUFFER_SIZE];
 
@@ -30,6 +33,9 @@ int RightLED = 0;
 int LeftLED = 0;
 
 uint32_t usTime = 0;
+
+//조도센서 전역변수
+uint16_t ADC1_CONVERTED_VALUE;
 
 //모터 전역변수
 int16_t Motor_Pin[4] = {GPIO_Pin_10, GPIO_Pin_11, GPIO_Pin_12, GPIO_Pin_13};
@@ -71,6 +77,15 @@ void Motor_TurnRight(void);
 void Motor_Stop(void);
 void Motor_Init(void);
 
+//조도센서
+void Light_RCC_Configure(void);
+void Light_GPIO_Configure(void);
+void Light_NVIC_Configure(void);
+void Light_ADC_Configure(void);
+void Light_Init(void);
+
+
+
 //딜레이
 void Delay(void);
 
@@ -97,13 +112,15 @@ void LED_Init(void)
 
 void LEDTurnOnOff(void)
 {
-    if (/* TODO 조도센서 일정 값 이상 */)
+    if (ADC1_CONVERTED_VALUE > 2200)
     {
         GPIO_SetBits(GPIOE, GPIO_Pin_0); // 전조등 끄기
+        printf(" 00 %u\n", ADC1_CONVERTED_VALUE);
     }
     else
     {
         GPIO_ResetBits(GPIOE, GPIO_Pin_0); // 전조등 켜기
+        printf(" 11 %u\n", ADC1_CONVERTED_VALUE);
     }
 
     if (LeftLED % 2 == 0)
@@ -427,8 +444,8 @@ void Motor_Start(void)
 {
     GPIO_SetBits(GPIOE, Motor_Pin[0]);
     GPIO_ResetBits(GPIOE, Motor_Pin[1]);
-    GPIO_ResetBits(GPIOE, Motor_Pin[2]);
-    GPIO_SetBits(GPIOE, Motor_Pin[3]);
+    GPIO_ResetBits(GPIOE, Motor_Pin[3]);
+    GPIO_SetBits(GPIOE, Motor_Pin[2]);
 }
 
 void Motor_Back(void)
@@ -469,6 +486,86 @@ void Motor_Init(void)
     Motor_GPIO_Configure();
 }
 
+//조도센서
+
+
+void Light_RCC_Configure(void)
+{
+    // TODO: Enable the APB2 peripheral clock using the function 'RCC_APB2PeriphClockCmd'
+    
+    /* Alternate Function IO clock enable */
+    RCC_APB2PeriphClockCmd(RCC_APB2Periph_AFIO, ENABLE);
+    
+    /* ADC */
+    RCC_APB2PeriphClockCmd(RCC_APB2Periph_ADC1, ENABLE);
+    
+    RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOC, ENABLE);
+}
+
+void Light_ADC_Configure(void) {
+    ADC_InitTypeDef ADC_InitStructure;
+    ADC_InitStructure.ADC_ScanConvMode = DISABLE;
+    ADC_InitStructure.ADC_ContinuousConvMode = ENABLE;
+    ADC_InitStructure.ADC_Mode = ADC_Mode_Independent;
+    ADC_InitStructure.ADC_DataAlign = ADC_DataAlign_Right;
+    ADC_InitStructure.ADC_ExternalTrigConv = ADC_ExternalTrigConv_None;
+    ADC_InitStructure.ADC_NbrOfChannel = 1;
+    
+    ADC_Init(ADC1, &ADC_InitStructure);
+    ADC_RegularChannelConfig(ADC1, ADC_Channel_10, 1, ADC_SampleTime_239Cycles5);
+    ADC_ITConfig(ADC1, ADC_IT_EOC, ENABLE);
+    ADC_Cmd(ADC1, ENABLE);
+    ADC_ResetCalibration(ADC1);
+    while(ADC_GetResetCalibrationStatus(ADC1));
+    ADC_StartCalibration(ADC1);
+    while(ADC_GetCalibrationStatus(ADC1));
+    ADC_SoftwareStartConvCmd(ADC1, ENABLE);
+}
+
+void Light_GPIO_Configure(void)
+{
+    GPIO_InitTypeDef GPIO_InitStructure;
+
+    // TODO: Initialize the GPIO pins using the structure 'GPIO_InitTypeDef' and the function 'GPIO_Init'
+    
+    // ADC
+    GPIO_InitStructure.GPIO_Pin = GPIO_Pin_0;
+    GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
+    GPIO_InitStructure.GPIO_Mode = GPIO_Mode_AIN;
+    GPIO_Init(GPIOC, &GPIO_InitStructure);
+}
+
+void Light_NVIC_Configure(void) {
+
+    NVIC_InitTypeDef NVIC_InitStructure;
+    
+    // TODO: fill the arg you want
+    NVIC_PriorityGroupConfig(NVIC_PriorityGroup_0);
+
+    // TODO: Initialize the NVIC using the structure 'NVIC_InitTypeDef' and the function 'NVIC_Init'
+    
+    // 'NVIC_EnableIRQ' is only required for USART setting
+    // NVIC_EnableIRQ(USART1_IRQn);
+    NVIC_InitStructure.NVIC_IRQChannel = ADC1_2_IRQn;
+    NVIC_InitStructure.NVIC_IRQChannelPreemptionPriority = 0; // TODO
+    NVIC_InitStructure.NVIC_IRQChannelSubPriority = 0; // TODO
+    NVIC_InitStructure.NVIC_IRQChannelCmd = ENABLE;
+    NVIC_Init(&NVIC_InitStructure);
+}
+
+void ADC1_2_IRQHandler(void) {
+    uint16_t diff = ADC_GetConversionValue(ADC1) - ADC1_CONVERTED_VALUE;
+    ADC1_CONVERTED_VALUE = ADC_GetConversionValue(ADC1);
+}
+
+void Light_Init(void){
+    Light_RCC_Configure();
+    Light_GPIO_Configure();
+    Light_NVIC_Configure();
+    Light_ADC_Configure();
+}
+
+
 void Delay(void)
 {
     int i;
@@ -486,12 +583,14 @@ int main(void)
     Bluetooth_Init();
     UltraSound_Init();
     Motor_Init(); //모터
+    Light_Init(); //조도센서
 
     while (1)
     {
         LEDTurnOnOff();
+        Motor_Start();
 
-        if (Read_Distance() < 15)
+        /*if (Read_Distance() < 15)
         {
             // TODO 정지!
             Motor_Stop();
@@ -532,7 +631,7 @@ int main(void)
             else if (data == 6)
             { // TODO 크락션
             }
-        }
+        }*/
     }
     return 0;
 }
