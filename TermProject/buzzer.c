@@ -50,7 +50,7 @@ void TIM3_Configure(void)
 
     /* Time base configuration */
     TIM_TimeBaseInitTypeDef TIM_TimeBaseStructure;
-    TIM_TimeBaseStructure.TIM_Period = 10;    // Overflow Interrupt On 10 usec 타이머주기
+    TIM_TimeBaseStructure.TIM_Period = 10;    // Overflow Interrupt On 10 msec 타이머주기
     TIM_TimeBaseStructure.TIM_Prescaler = 32; // Timer/Count2 Clock = 36Mhz / (35 + 1) = 1Mhz = 1 usec
     TIM_TimeBaseStructure.TIM_ClockDivision = 0;
     TIM_TimeBaseStructure.TIM_CounterMode = TIM_CounterMode_Up; // 카운터모드동작
@@ -97,13 +97,41 @@ int main(void)
 
     enum notes
     {   // 음 약간 이상함.
+        C1 = 33,  // 도(523.25Hz)
+        D1 = 37, // 래
+        DS1 = 39, // 레 샾
+        E1 = 41, // 미
+        F1 = 44, // 파
+        G1 = 49, // 솔
+        A1 = 55, // 라
+        B1 = 62, // 시
+
+        C2 = 65,  // 도(523.25Hz)
+        D2 = 73, // 래
+        DS2 = 78, // 레 샾
+        E2 = 82, // 미
+        F2 = 87, // 파
+        G2 = 98, // 솔
+        A2 = 110, // 라
+        B2 = 123, // 시
+
+        C3 = 131,  // 도(523.25Hz)
+        D3 = 147, // 래
+        DS3 = 156, // 레 샾
+        E3 = 165, // 미
+        F3 = 175, // 파
+        G3 = 196, // 솔
+        A3 = 220, // 라
+        B3 = 247, // 시
+
         C4 = 261, // 도(261.63Hz)
-        D4 = 293, // 래(293.66Hz)
+        D4 = 293, // 레(293.66Hz)
         E4 = 329, // 미(329.63Hz)
         F4 = 349, // 파(349.23Hz)
         G4 = 392, // 솔(392.00Hz)
         A4 = 440, // 라(440.00Hz)
         B4 = 493, // 시(493.88Hz)
+
         C5 = 523,  // 도(523.25Hz)
         D5 = 587, // 래
         DS5 = 622, // 레 샾
@@ -112,19 +140,46 @@ int main(void)
         G5 = 784, // 솔
         A5 = 880, // 라
         B5 = 988, // 시
-        
+
+        C6 = 1047,  // 도(523.25Hz)
+        D6 = 1175, // 래
+        DS6 = 1245, // 레 샾
+        E6 = 1319, // 미
+        F6 = 1397, // 파
+        G6 = 1568, // 솔
+        A6 = 1760, // 라
+        B6 = 1976, // 시
+
+        C7 = 2093,  // 도(523.25Hz)
+        D7 = 2349, // 래
+        DS7 = 2489, // 레 샾
+        E7 = 2637, // 미
+        F7 = 2794, // 파
+        G7 = 3136, // 솔
+        A7 = 3520, // 라
+        B7 = 3951, // 시
+
+        C8 = 4186,  // 도(523.25Hz)
+        D8 = 4699, // 래
+        DS8 = 4978, // 레 샾
+        E8 = 5274, // 미
+        F8 = 5588, // 파
+        G8 = 6272, // 솔
+        A8 = 7040, // 라
+        B8 = 7902, // 시
     };
 
     enum notes A[] = {G4, G4, A4, A4, G4, G4, E4, G4, G4, E4, E4, D4,
                       G4, G4, A4, A4, G4, G4, E4, G4, E4, D4, E4, C4};
 
-    enum notes back[] = {E5, DS5, E5, DS5, E5, B4, DS5 C5, A4, A4};
+    enum notes back[] = {E5, DS5, E5, DS5, E5, B4, DS5, C5, A4, A4};
 
+    enum notes all[] = {C1, D1, DS1, E1, F1, G1, A1, B1, C2, D2, DS2, E2, F2, G2, A2, B2, C3, D3, DS3, E3, F3, G3, A3, B3, C4, D4, DS4, E4, F4, G4, A4, B4, C5, D5, DS5, E5, F5, G5, A5, B5, C6, D6, DS6, E6, F6, G6, A6, B6, C7, D7, DS7, E7, F7, G7, A7, B7, C8, D8, DS8, E8, F8, G8, A8, B8};
     while (1)
     {
-        for (int i = 0; i < sizeof(back) / sizeof(enum notes); i++)
+        for (int i = 0; i < sizeof(all) / sizeof(enum notes); i++)
         {
-            Music = back[i];
+            Music = all[i];
             delay();
             delay();
         }
