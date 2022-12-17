@@ -125,8 +125,7 @@ int main(void)
         B8 = 7902, // 시
     };
 
-    enum notes back[] = {E7, DS7, E7, DS7, E7, C7, E7, D7, B6, B6};
-
+    enum notes back[] = {B6, D7, C7, A6, A6};
 
     while (1)
     {
@@ -135,7 +134,7 @@ int main(void)
 
         for (int i = 0; i < sizeof(back) / sizeof(enum notes); i++)
         {
-            Music = 100000/back[i];
+            Music = 100000 / back[i];
             delay();
         }
         Music = 0;
