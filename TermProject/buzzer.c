@@ -97,53 +97,7 @@ int main(void)
 
     enum notes
     {   
-        C1 = 33,  // 도(523.25Hz)
-        D1 = 37, // 래
-        DS1 = 39, // 레 샾
-        E1 = 41, // 미
-        F1 = 44, // 파
-        G1 = 49, // 솔
-        A1 = 55, // 라
-        B1 = 62, // 시
-
-        C2 = 65,  // 도(523.25Hz)
-        D2 = 73, // 래
-        DS2 = 78, // 레 샾
-        E2 = 82, // 미
-        F2 = 87, // 파
-        G2 = 98, // 솔
-        A2 = 110, // 라
-        B2 = 123, // 시
-
-        C3 = 131,  // 도(523.25Hz)
-        D3 = 147, // 래
-        DS3 = 156, // 레 샾
-        E3 = 165, // 미
-        F3 = 175, // 파
-        G3 = 196, // 솔
-        A3 = 220, // 라
-        B3 = 247, // 시
-        // 음 약간 이상함.
-        C4 = 261, // 도(261.63Hz)
-        CS4 = 277,
-        D4 = 293, // 레(293.66Hz)
-        DS4 = 311,
-        E4 = 329, // 미(329.63Hz)
-        F4 = 349, // 파(349.23Hz)
-        G4 = 392, // 솔(392.00Hz)
-        A4 = 440, // 라(440.00Hz)
-        B4 = 493, // 시(493.88Hz)
-
-        C5 = 523,  // 도(523.25Hz)
-        D5 = 587, // 래
-        DS5 = 622, // 레 샾
-        E5 = 659, // 미
-        F5 = 698, // 파
-        G5 = 784, // 솔
-        A5 = 880, // 라
-        B5 = 988, // 시
-
-        C6 = 1047,  // 도(523.25Hz)
+        C6 = 1047,  // 도
         D6 = 1175, // 래
         DS6 = 1245, // 레 샾
         E6 = 1319, // 미
@@ -152,7 +106,7 @@ int main(void)
         A6 = 1760, // 라
         B6 = 1976, // 시
 
-        C7 = 2093,  // 도(523.25Hz)
+        C7 = 2093,  // 도
         D7 = 2349, // 래
         DS7 = 2489, // 레 샾
         E7 = 2637, // 미
@@ -161,7 +115,7 @@ int main(void)
         A7 = 3520, // 라
         B7 = 3951, // 시
 
-        C8 = 4186,  // 도(523.25Hz)
+        C8 = 4186,  // 도
         D8 = 4699, // 래
         DS8 = 4978, // 레 샾
         E8 = 5274, // 미
@@ -171,19 +125,7 @@ int main(void)
         B8 = 7902, // 시
     };
 
-    enum notes A[] = {G4, G4, A4, A4, G4, G4, E4, G4, G4, E4, E4, D4,
-                      G4, G4, A4, A4, G4, G4, E4, G4, E4, D4, E4, C4};
-
-    enum notes all[] = {C1, D1, DS1, E1, F1, G1, A1, B1, C2, D2, DS2, E2, F2, G2, A2, B2, C3, D3, DS3, E3, F3, G3, A3, B3, C4, D4, DS4, E4, F4, G4, A4, B4, C5, D5, DS5, E5, F5, G5, A5, B5, C6, D6, DS6, E6, F6, G6, A6, B6, C7, D7, DS7, E7, F7, G7, A7, B7, C8, D8, DS8, E8, F8, G8, A8, B8};
-    
-    enum notes num4[] = {C4, D4, E4, F4, G4, A4, B4};
-    enum notes num5[] = {C5, D5, E5, F5, G5, A5, B5};
-    enum notes num6[] = {C6, D6, E6, F6, G6, A6, B6};
-    enum notes num7[] = {C7, D7, E7, F7, G7, A7, B7};
-    enum notes num8[] = {C8, D8, E8, F8, G8, A8, B8};
-
-    enum notes back1[] = {E6, DS6, E6, DS6, E6, B5, D6, C6, A5, A5};
-    enum notes back2[] = {E7, DS7, E7, DS7, E7, B6, D7, C7, A6, A6};
+    enum notes back[] = {E7, DS7, E7, DS7, E7, C7, E7, D7, B6, B6};
 
 
     while (1)
@@ -191,18 +133,9 @@ int main(void)
         delay();
         delay();
 
-        for (int i = 0; i < sizeof(back1) / sizeof(enum notes); i++)
+        for (int i = 0; i < sizeof(back) / sizeof(enum notes); i++)
         {
-            Music = 100000/back1[i];
-            delay();
-        }
-        Music = 0;
-        delay();
-        delay();
-
-        for (int i = 0; i < sizeof(back2) / sizeof(enum notes); i++)
-        {
-            Music = 100000/back2[i];
+            Music = 100000/back[i];
             delay();
         }
         Music = 0;
