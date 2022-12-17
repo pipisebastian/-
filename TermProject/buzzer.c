@@ -51,7 +51,7 @@ void TIM3_Configure(void)
     /* Time base configuration */
     TIM_TimeBaseInitTypeDef TIM_TimeBaseStructure;
     TIM_TimeBaseStructure.TIM_Period = 10;    // Overflow Interrupt On 10 msec 타이머주기
-    TIM_TimeBaseStructure.TIM_Prescaler = 32; // Timer/Count2 Clock = 36Mhz / (35 + 1) = 1Mhz = 1 usec
+    TIM_TimeBaseStructure.TIM_Prescaler = prescale; // Timer/Count2 Clock = 36Mhz / (35 + 1) = 1Mhz = 1 usec
     TIM_TimeBaseStructure.TIM_ClockDivision = 0;
     TIM_TimeBaseStructure.TIM_CounterMode = TIM_CounterMode_Up; // 카운터모드동작
     TIM_TimeBaseInit(TIM3, &TIM_TimeBaseStructure);
@@ -96,7 +96,7 @@ int main(void)
     NVIC_Configure();
 
     enum notes
-    {   // 음 약간 이상함.
+    {   
         C1 = 33,  // 도(523.25Hz)
         D1 = 37, // 래
         DS1 = 39, // 레 샾
@@ -123,9 +123,10 @@ int main(void)
         G3 = 196, // 솔
         A3 = 220, // 라
         B3 = 247, // 시
-
+        // 음 약간 이상함.
         C4 = 261, // 도(261.63Hz)
         D4 = 293, // 레(293.66Hz)
+        DS4 = 311,
         E4 = 329, // 미(329.63Hz)
         F4 = 349, // 파(349.23Hz)
         G4 = 392, // 솔(392.00Hz)
