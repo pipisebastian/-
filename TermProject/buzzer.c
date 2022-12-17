@@ -177,7 +177,15 @@ int main(void)
 
     enum notes all[] = {C1, D1, DS1, E1, F1, G1, A1, B1, C2, D2, DS2, E2, F2, G2, A2, B2, C3, D3, DS3, E3, F3, G3, A3, B3, C4, D4, DS4, E4, F4, G4, A4, B4, C5, D5, DS5, E5, F5, G5, A5, B5, C6, D6, DS6, E6, F6, G6, A6, B6, C7, D7, DS7, E7, F7, G7, A7, B7, C8, D8, DS8, E8, F8, G8, A8, B8};
 
-    enum notes num4[] = {C4, D4, DS4, E4, F4, G4, A4, B4};
+    enum notes num4[] = {C4, D4, E4, F4, G4, A4, B4};
+
+    enum notes num5[] = {C5, D5, E5, F5, G5, A5, B5};
+
+    enum notes num6[] = {C6, D6, E6, F6, G6, A6, B6};
+
+    enum notes num7[] = {C7, D7, E7, F7, G7, A7, B7};
+
+    enum notes num8[] = {C8, D8, E8, F8, G8, A8, B8};
 
     while (1)
     {
@@ -187,6 +195,46 @@ int main(void)
         for (int i = 0; i < sizeof(num4) / sizeof(enum notes); i++)
         {
             Music = 100000 / num4[i];
+            delay();
+            delay();
+        }
+
+        delay();
+        delay();
+
+        for (int i = 0; i < sizeof(num5) / sizeof(enum notes); i++)
+        {
+            Music = 100000 / num5[i];
+            delay();
+            delay();
+        }
+
+        delay();
+        delay();
+
+        for (int i = 0; i < sizeof(num6) / sizeof(enum notes); i++)
+        {
+            Music = 100000 / num6[i];
+            delay();
+            delay();
+        }
+
+        delay();
+        delay();
+
+        for (int i = 0; i < sizeof(num7) / sizeof(enum notes); i++)
+        {
+            Music = 100000 / num7[i];
+            delay();
+            delay();
+        }
+
+        delay();
+        delay();
+
+        for (int i = 0; i < sizeof(num8) / sizeof(enum notes); i++)
+        {
+            Music = 100000 / num8[i];
             delay();
             delay();
         }
