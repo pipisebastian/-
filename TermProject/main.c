@@ -444,32 +444,32 @@ void Motor_Start(void)
 {
     GPIO_SetBits(GPIOE, Motor_Pin[0]);
     GPIO_ResetBits(GPIOE, Motor_Pin[1]);
-    GPIO_SetBits(GPIOE, Motor_Pin[2]);
-    GPIO_ResetBits(GPIOE, Motor_Pin[3]);
+    GPIO_ResetBits(GPIOE, Motor_Pin[2]);
+    GPIO_SetBits(GPIOE, Motor_Pin[3]);
 }
 
 void Motor_Back(void)
 {
     GPIO_ResetBits(GPIOE, Motor_Pin[0]);
     GPIO_SetBits(GPIOE, Motor_Pin[1]);
-    GPIO_ResetBits(GPIOE, Motor_Pin[2]);
-    GPIO_SetBits(GPIOE, Motor_Pin[3]);
+    GPIO_SetBits(GPIOE, Motor_Pin[2]);
+    GPIO_ResetBits(GPIOE, Motor_Pin[3]);
 }
 
 void Motor_TurnLeft(void)
 {
     GPIO_ResetBits(GPIOE, Motor_Pin[0]);
     GPIO_SetBits(GPIOE, Motor_Pin[1]);
-    GPIO_SetBits(GPIOE, Motor_Pin[2]);
-    GPIO_ResetBits(GPIOE, Motor_Pin[3]);
+    GPIO_ResetBits(GPIOE, Motor_Pin[2]);
+    GPIO_SetBits(GPIOE, Motor_Pin[3]);
 }
 
 void Motor_TurnRight(void)
 {
     GPIO_SetBits(GPIOE, Motor_Pin[0]);
     GPIO_ResetBits(GPIOE, Motor_Pin[1]);
-    GPIO_ResetBits(GPIOE, Motor_Pin[2]);
-    GPIO_SetBits(GPIOE, Motor_Pin[3]);
+    GPIO_SetBits(GPIOE, Motor_Pin[2]);
+    GPIO_ResetBits(GPIOE, Motor_Pin[3]);
 }
 
 void Motor_Stop(void)
@@ -588,9 +588,9 @@ int main(void)
     while (1)
     {
         LEDTurnOnOff();
-        Motor_Back();
+        Motor_Stop();
 
-        /f (Read_Distance() < 15)
+        /*if (Read_Distance() < 15)
         {
             // TODO 정지!
             Motor_Stop();
@@ -631,7 +631,7 @@ int main(void)
             else if (data == 6)
             { // TODO 크락션
             }
-        }
+        }*/
     }
     return 0;
 }
