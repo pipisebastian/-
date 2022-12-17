@@ -51,7 +51,7 @@ void TIM3_Configure(void)
     /* Time base configuration */
     TIM_TimeBaseInitTypeDef TIM_TimeBaseStructure;
     TIM_TimeBaseStructure.TIM_Period = 10;    // Overflow Interrupt On 10 msec 타이머주기
-    TIM_TimeBaseStructure.TIM_Prescaler = 64; // Timer/Count2 Clock = 36Mhz / (35 + 1) = 1Mhz = 1 usec
+    TIM_TimeBaseStructure.TIM_Prescaler = 36; // Timer/Count2 Clock = 36Mhz / (35 + 1) = 1Mhz = 1 usec
     TIM_TimeBaseStructure.TIM_ClockDivision = 0;
     TIM_TimeBaseStructure.TIM_CounterMode = TIM_CounterMode_Up; // 카운터모드동작
     TIM_TimeBaseInit(TIM3, &TIM_TimeBaseStructure);
@@ -195,8 +195,6 @@ int main(void)
     enum notes back3[] = {E7, DS7, E7, DS7, E7, B6, DS7, C7, A6, A6};
 
     enum notes back4[] = {E8, DS8, E8, DS8, E8, B7, DS8, C8, A7, A7};
-    
-    enum notes back5[] = {D4, C4, CS4, D4, C4, CS4, D4, DS4, E4};
 
 
     while (1)
@@ -204,47 +202,41 @@ int main(void)
         delay();
         delay();
 
-        for (int i = 0; i < sizeof(back5) / sizeof(enum notes); i++)
+        for (int i = 0; i < sizeof(back1) / sizeof(enum notes); i++)
         {
-            Music = 100000 / back5[i];
-            delay();
+            Music = back1[i];
             delay();
         }
-        Music = 1;
+        Music = 0;
         delay();
         delay();
 
-        /*
         for (int i = 0; i < sizeof(back2) / sizeof(enum notes); i++)
         {
-            Music = 100000 / back2[i];
-            delay();
+            Music = back2[i];
             delay();
         }
-        Music = 1;
+        Music = 0;
         delay();
         delay();
 
         for (int i = 0; i < sizeof(back3) / sizeof(enum notes); i++)
         {
-            Music = 100000 / back3[i];
-            delay();
+            Music = back3[i];
             delay();
         }
-        Music = 1;
+        Music = 0;
         delay();
         delay();
 
         for (int i = 0; i < sizeof(back4) / sizeof(enum notes); i++)
         {
-            Music = 100000 / back4[i];
-            delay();
+            Music = back4[i];
             delay();
         }
-        Music = 1;
+        Music = 0;
         delay();
         delay();
-        */
     }
 
     TIM_Cmd(TIM3, DISABLE);
