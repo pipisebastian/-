@@ -729,6 +729,9 @@ int main(void)
     Motor_Init(); //모터
     Light_Init(); //조도센서
     Buzzer_Init(); // Buzzer
+    
+    TIM_Cmd(TIM3, DISABLE);
+    GPIOB->BRR = GPIO_Pin_0;
 
     while (1)
     {
