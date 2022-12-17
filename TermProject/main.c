@@ -112,7 +112,7 @@ void LED_Init(void)
 
 void LEDTurnOnOff(void)
 {
-    if (ADC1_CONVERTED_VALUE > 2200)
+    if (ADC1_CONVERTED_VALUE < 2200)
     {
         GPIO_SetBits(GPIOE, GPIO_Pin_0); // 전조등 끄기
         printf(" 00 %u\n", ADC1_CONVERTED_VALUE);
@@ -588,7 +588,6 @@ int main(void)
     while (1)
     {
         LEDTurnOnOff();
-        Motor_Stop();
 
         /*if (Read_Distance() < 15)
         {
