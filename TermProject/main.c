@@ -5,6 +5,8 @@
 #include "stm32f10x_rcc.h"
 #include "stm32f10x_adc.h"
 #include "core_cm3.h"
+#include <pthread.h>
+#include <unistd.h>
 #include "touch.h"
 #include "misc.h"
 #include "stdio.h"
@@ -105,6 +107,7 @@ void TIM3_IRQHandler(void);
 
 //딜레이
 void Delay(void);
+void buzzer_delay(void);
 
 void LED_RCC_Configure(void)
 {
@@ -680,7 +683,7 @@ void Buzzer_playBackMelody(void)
     for (int i = 0; i < sizeof(back) / sizeof(enum notes); i++)
     {
         Music = 100000000 / back[i];
-        Delay();
+        buzzer_delay();
     }
 
     TIM_Cmd(TIM3, DISABLE);
@@ -692,10 +695,10 @@ void Buzzer_playBeepMelody(void)
     TIM_Cmd(TIM3, ENABLE);
 
     Music = 100000 / 523;
-    Delay();
-    Delay();
+    buzzer_delay();
+    buzzer_delay();
     Music = 100000 / 523;
-    Delay();
+    buzzer_delay();
 
     TIM_Cmd(TIM3, DISABLE);
     GPIOB->BRR = GPIO_Pin_0;
@@ -715,6 +718,14 @@ void Delay(void)
     int i;
 
     for (i = 0; i < 1000000; i++)
+    {
+    }
+}
+
+void buzzer_delay(void)
+{
+    int i;
+    for (i = 0; i < 10000; i++)
     {
     }
 }
@@ -747,7 +758,14 @@ int main(void)
             if (data == 0)
             { // 후진
                 Motor_Back();
-                Buzzer_playBackMelody();
+                pthread_t thread_id;
+                int sts;
+                pthread_t thread_id;
+                void *t_return;
+                if((sts=pthread_create((&thread_id), Null,Buzzer_playBackMelody, NULL))!=0){
+                    perror("error\n\n");
+                    exit(1);
+                }
             }
             else if (data == 1)
             { // 전진
