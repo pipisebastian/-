@@ -51,7 +51,7 @@ void TIM3_Configure(void)
     /* Time base configuration */
     TIM_TimeBaseInitTypeDef TIM_TimeBaseStructure;
     TIM_TimeBaseStructure.TIM_Period = 10;    // Overflow Interrupt On 10 msec 타이머주기
-    TIM_TimeBaseStructure.TIM_Prescaler = prescale; // Timer/Count2 Clock = 36Mhz / (35 + 1) = 1Mhz = 1 usec
+    TIM_TimeBaseStructure.TIM_Prescaler = 84; // Timer/Count2 Clock = 36Mhz / (35 + 1) = 1Mhz = 1 usec
     TIM_TimeBaseStructure.TIM_ClockDivision = 0;
     TIM_TimeBaseStructure.TIM_CounterMode = TIM_CounterMode_Up; // 카운터모드동작
     TIM_TimeBaseInit(TIM3, &TIM_TimeBaseStructure);
@@ -175,12 +175,19 @@ int main(void)
 
     enum notes back[] = {E5, DS5, E5, DS5, E5, B4, DS5, C5, A4, A4};
 
-    enum notes all[] = {C1, D1, DS1, E1, F1, G1, A1, B1, C2, D2, DS2, E2, F2, G2, A2, B2, C3, D3, DS3, E3, F3, G3, A3, B3, C4, D4, DS4, E4, F4, G4, A4, B4, C5, D5, DS5, E5, F5, G5, A5, B5, C6, D6, DS6, E6, F6, G6, A6, B6, C7, D7, DS7, E7, F7, G7, A7, B7, C8, D8, DS8, E8, F8, G8, A8, B8};
+    enum notes all[] = {C1, D1, DS1, E1, F1, G1, A1, B1, C2, D2, DS2, E2, F2, G2, A2, B2, C3, D3, DS3, E3, F3, G3, A3, B3};
+
+
+
     while (1)
     {
+        delay();
+        delay();
+
         for (int i = 0; i < sizeof(all) / sizeof(enum notes); i++)
         {
             Music = all[i];
+            delay();
             delay();
             delay();
         }
