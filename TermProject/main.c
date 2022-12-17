@@ -680,9 +680,9 @@ void Buzzer_playBackMelody(void)
     for (int i = 0; i < sizeof(back) / sizeof(enum notes); i++)
     {
         Music = 100000000 / back[i];
-        buzzer_delay();
+        Buzzer_daley();
     }
-    Music_index++
+    Music_index++;
 
     Music_index %= 10;
 
