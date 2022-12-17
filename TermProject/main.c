@@ -791,6 +791,10 @@ int main(void)
               Buzzer_playBeepMelody();
                 Music_index = 0;
             }
+            else if(data == 9)
+            {
+              Motor_Stop();
+            }
         }
     }
     return 0;
