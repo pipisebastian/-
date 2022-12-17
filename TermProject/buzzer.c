@@ -194,6 +194,8 @@ int main(void)
     enum notes back3[] = {E7, DS7, E7, DS7, E7, B6, DS7, C7, A6, A6};
 
     enum notes back4[] = {E8, DS8, E8, DS8, E8, B7, DS8, C8, A7, A7};
+    
+    enum notes back5[] = {D4, C4, CS4, D4, C4, CS4, D4, DS4, E4};
 
 
     while (1)
@@ -201,9 +203,9 @@ int main(void)
         delay();
         delay();
 
-        for (int i = 0; i < sizeof(back1) / sizeof(enum notes); i++)
+        for (int i = 0; i < sizeof(back5) / sizeof(enum notes); i++)
         {
-            Music = 100000 / back1[i];
+            Music = 100000 / back5[i];
             delay();
             delay();
         }
@@ -211,6 +213,7 @@ int main(void)
         delay();
         delay();
 
+        /*
         for (int i = 0; i < sizeof(back2) / sizeof(enum notes); i++)
         {
             Music = 100000 / back2[i];
@@ -240,6 +243,7 @@ int main(void)
         Music = 1;
         delay();
         delay();
+        */
     }
 
     TIM_Cmd(TIM3, DISABLE);
