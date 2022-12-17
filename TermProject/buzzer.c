@@ -87,13 +87,9 @@ void delay(void)
     }
 }
 
-int main(void)
+void playBackMelody(void)
 {
-    SystemInit();
-    RCC_Configure();
-    GPIO_Configure();
-    TIM3_Configure();
-    NVIC_Configure();
+    TIM_Cmd(TIM3, ENABLE);
 
     enum notes
     {   
@@ -117,22 +113,44 @@ int main(void)
     };
 
     enum notes back[] = {E7, DS7, E7, DS7, E7, B6, D7, C7, A6, A6};
-
-    while (1)
+    
+    for (int i = 0; i < sizeof(back) / sizeof(enum notes); i++)
     {
-        delay();
-        delay();
-
-        for (int i = 0; i < sizeof(back) / sizeof(enum notes); i++)
-        {
-            Music = 100000000 / back[i];
-            delay();
-        }
-        Music = 0;
-        delay();
+        Music = 100000000 / back[i];
         delay();
     }
 
     TIM_Cmd(TIM3, DISABLE);
     GPIOB->BRR = GPIO_Pin_0;
+}
+
+void playBeepMelody(void)
+{   
+    TIM_Cmd(TIM3, ENABLE);
+
+    Music = 100000000 / 1318510;
+    delay();
+    Music = 0;
+    delay();
+    Music = 100000000 / 1318510;
+    delay();
+
+    TIM_Cmd(TIM3, DISABLE);
+    GPIOB->BRR = GPIO_Pin_0;
+}
+
+int main(void)
+{
+    SystemInit();
+    RCC_Configure();
+    GPIO_Configure();
+    TIM3_Configure();
+    NVIC_Configure();
+
+    playBackMelody();
+    delay();
+    delay();
+    delay();
+    playBeepMelody();
+
 }
