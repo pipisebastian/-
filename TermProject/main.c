@@ -5,8 +5,6 @@
 #include "stm32f10x_rcc.h"
 #include "stm32f10x_adc.h"
 #include "core_cm3.h"
-#include <pthread.h>
-#include <unistd.h>
 #include "touch.h"
 #include "misc.h"
 #include "stdio.h"
@@ -44,6 +42,7 @@ uint32_t usTime = 0;
 
 uint32_t Sound = 0;
 uint32_t Music = 0;
+unit32_t Music_index=0;
 
 //조도센서 전역변수
 uint16_t ADC1_CONVERTED_VALUE;
@@ -107,7 +106,7 @@ void TIM3_IRQHandler(void);
 
 //딜레이
 void Delay(void);
-void buzzer_delay(void);
+void Buzzer_daley(void);
 
 void LED_RCC_Configure(void)
 {
@@ -679,12 +678,11 @@ void Buzzer_playBackMelody(void)
     };
 
     enum notes back[] = {E7, DS7, E7, DS7, E7, B6, D7, C7, A6, A6};
-    
-    for (int i = 0; i < sizeof(back) / sizeof(enum notes); i++)
-    {
-        Music = 100000000 / back[i];
-        buzzer_delay();
-    }
+
+    Music = 100000000 / back[Music_index];
+    Buzzer_daley();
+
+    Music_index %= 10;
 
     TIM_Cmd(TIM3, DISABLE);
     GPIOB->BRR = GPIO_Pin_0;
@@ -695,10 +693,10 @@ void Buzzer_playBeepMelody(void)
     TIM_Cmd(TIM3, ENABLE);
 
     Music = 100000 / 523;
-    buzzer_delay();
-    buzzer_delay();
+    Buzzer_daley();
+    Buzzer_daley();
     Music = 100000 / 523;
-    buzzer_delay();
+    Buzzer_daley();
 
     TIM_Cmd(TIM3, DISABLE);
     GPIOB->BRR = GPIO_Pin_0;
@@ -722,9 +720,10 @@ void Delay(void)
     }
 }
 
-void buzzer_delay(void)
+void Buzzer_daley(void)
 {
     int i;
+
     for (i = 0; i < 10000; i++)
     {
     }
@@ -750,6 +749,7 @@ int main(void)
         if (Read_Distance() < 15) {
             // 정지!
             Motor_Stop();
+            Music_index = 0;
         } else if (0 == Bluetooth_Uart3_Is_Empty()) {
             data = Bluetooth_Uart3_DeQueue();
             printf("data: %d \n", data);
@@ -758,40 +758,40 @@ int main(void)
             if (data == 0)
             { // 후진
                 Motor_Back();
-                pthread_t thread_id;
-                int sts;
-                pthread_t thread_id;
-                void *t_return;
-                if((sts=pthread_create((&thread_id), Null,Buzzer_playBackMelody, NULL))!=0){
-                    perror("error\n\n");
-                    exit(1);
-                }
+                Buzzer_playBackMelody();
+                Music_index++;
             }
             else if (data == 1)
             { // 전진
                 Motor_Start();
+                Music_index = 0;
             }
             else if (data == 2)
             { // 좌회전
                 Motor_TurnLeft();
+                Music_index = 0;
             }
             else if (data == 3)
             { // 우회전
                 Motor_TurnRight();
+                Music_index = 0;
             }
             else if (data == 4)
             { // 왼쪽 방향 지시등
                 LeftLED++;
                 LeftLED %= 2;
+                Music_index = 0;
             }
             else if (data == 5)
             { // 오른쪽 방향 지시등
                 RightLED++;
                 RightLED %= 2;
+                Music_index = 0;
             }
             else if (data == 6)
             { // 크락션
               Buzzer_playBeepMelody();
+                Music_index = 0;
             }
         }
     }
