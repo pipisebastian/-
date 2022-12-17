@@ -76,23 +76,17 @@ void Motor_Init(void)
 {
     Motor_RCC_Configure();
     Motor_GPIO_Configure();
-
-    Motor_Start(void);
-    Motor_Back(void);
-    Motor_TurnLeft(void);
-    Motor_TurnRight(void);
-    Motor_Stop(void);
 }
 
 int main(void)
 {
 
     SystemInit();
-    Motor_Init(void);
+    Motor_Init();
 
     while (1)
     {
-        TurnLeft();
+        Motor_Start();
     }
     return 0;
 }
