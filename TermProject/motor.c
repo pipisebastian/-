@@ -16,6 +16,7 @@ void Motor_Back(void);
 void Motor_TurnLeft(void);
 void Motor_TurnRight(void);
 void Motor_Stop(void);
+void Motor_Init(void);
 
 int16_t Motor_Pin[4] = {GPIO_Pin_10, GPIO_Pin_11, GPIO_Pin_12, GPIO_Pin_13};
 
