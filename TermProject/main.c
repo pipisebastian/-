@@ -21,6 +21,9 @@
 // PE1 : 왼쪽 방향 지시등
 // PE2 : 오른쪽 방향지시등
 // Bluetooth
+// PA2 : TX
+// PA3 : RX
+//ultrasound
 // PE3 : ultrasound Echo (수신부 - INPUT)
 // PE4 : ultrasound Trig (송신부 - OUTPUT)
 // 모터
@@ -797,7 +800,7 @@ int main(void)
                 Music_index = 0;
             }
             else if(data == 9)
-            {
+            { //정지
               Motor_Stop();
             }
         }
