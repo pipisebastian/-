@@ -153,11 +153,11 @@ void LEDTurnOnOff(void)
 
     if (RightLED % 2 == 0)
     {
-        GPIO_SetBits(GPIOE, GPIO_Pin_1); // 왼쪽 방향지시등 끄기
+        GPIO_SetBits(GPIOE, GPIO_Pin_2); // 오른족 방향지시등 끄기
     }
     else
     {
-        GPIO_ResetBits(GPIOE, GPIO_Pin_1); // 왼쪽 방향지시등 켜기
+        GPIO_ResetBits(GPIOE, GPIO_Pin_2); // 오른쪽 방향지시등 켜기
     }
 }
 
@@ -722,9 +722,9 @@ int main(void)
             if (data == 0)
             { // 후진
                 Motor_Back();
-                Buzzer_playBackMelody();
-                printf("Music End\n");
-                Music_index++;
+                
+               Buzzer_playBackMelody();
+               Music_index++;
             }
             else if (data == 1)
             { // 전진
