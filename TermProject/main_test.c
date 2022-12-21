@@ -430,12 +430,12 @@ void Motor_GPIO_Configure(void) //
 }
 void Motor_Start(void)
 {
-  /*
+  
     GPIO_SetBits(GPIOE, Motor_Pin[0]);
     GPIO_ResetBits(GPIOE, Motor_Pin[1]);
     GPIO_ResetBits(GPIOE, Motor_Pin[2]);
     GPIO_SetBits(GPIOE, Motor_Pin[3]);
-*/
+
 
   GPIO_SetBits(GPIOD, Motor_Pin[0]);
   GPIO_ResetBits(GPIOD, Motor_Pin[1]);
@@ -445,12 +445,12 @@ void Motor_Start(void)
 
 void Motor_Back(void)
 {
-  /*
+  
     GPIO_ResetBits(GPIOE, Motor_Pin[0]);
     GPIO_SetBits(GPIOE, Motor_Pin[1]);
     GPIO_SetBits(GPIOE, Motor_Pin[2]);
     GPIO_ResetBits(GPIOE, Motor_Pin[3]);
-*/
+
 
   GPIO_ResetBits(GPIOD, Motor_Pin[0]);
   GPIO_SetBits(GPIOD, Motor_Pin[1]);
@@ -459,12 +459,12 @@ void Motor_Back(void)
 }
 
 void Motor_TurnLeft(void)
-{ /*
+{ 
      GPIO_ResetBits(GPIOE, Motor_Pin[0]);
      GPIO_SetBits(GPIOE, Motor_Pin[1]);
      GPIO_ResetBits(GPIOE, Motor_Pin[2]);
      GPIO_SetBits(GPIOE, Motor_Pin[3]);
- */
+ 
 
   GPIO_ResetBits(GPIOD, Motor_Pin[0]);
   GPIO_SetBits(GPIOD, Motor_Pin[1]);
@@ -473,12 +473,12 @@ void Motor_TurnLeft(void)
 }
 
 void Motor_TurnRight(void)
-{ /*
+{ 
     GPIO_SetBits(GPIOE, Motor_Pin[0]);
     GPIO_ResetBits(GPIOE, Motor_Pin[1]);
     GPIO_SetBits(GPIOE, Motor_Pin[2]);
     GPIO_ResetBits(GPIOE, Motor_Pin[3]);
-    */
+    
 
   GPIO_SetBits(GPIOD, Motor_Pin[0]);
   GPIO_ResetBits(GPIOD, Motor_Pin[1]);
@@ -535,11 +535,9 @@ void Light_ADC_Configure(void)
   ADC_ITConfig(ADC1, ADC_IT_EOC, ENABLE);
   ADC_Cmd(ADC1, ENABLE);
   ADC_ResetCalibration(ADC1);
-  while (ADC_GetResetCalibrationStatus(ADC1))
-    ;
+  while (ADC_GetResetCalibrationStatus(ADC1));
   ADC_StartCalibration(ADC1);
-  while (ADC_GetCalibrationStatus(ADC1))
-    ;
+  while (ADC_GetCalibrationStatus(ADC1));
   ADC_SoftwareStartConvCmd(ADC1, ENABLE);
 }
 
@@ -750,7 +748,6 @@ int main(void)
 
   TIM_Cmd(TIM3, DISABLE);
   GPIOB->BRR = GPIO_Pin_0;
-  int count = 1;
   while (1)
   {
     Motor_Start();
